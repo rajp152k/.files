@@ -131,6 +131,50 @@ return {
     end,
   },
 
+  -- Self-documenting keymaps. Press <leader>, g, z, ', `, ", or <C-w> and
+  -- pause to see available mappings/motions.
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Show buffer-local keymaps",
+      },
+      { "<leader>ht", "<cmd>Tutor<cr>", desc = "Neovim tutor" },
+      { "<leader>hh", "<cmd>help<cr>", desc = "Open :help" },
+      { "<leader>hi", "<cmd>help index<cr>", desc = "Help index" },
+      { "<leader>hc", "<cmd>checkhealth<cr>", desc = "Check health" },
+      { "<leader>hl", "<cmd>Lazy<cr>", desc = "Plugin manager" },
+      { "<leader>hm", "<cmd>Mason<cr>", desc = "Language tool manager" },
+      { "<leader>hs", "<cmd>ConjureSchool<cr>", desc = "Conjure tutorial" },
+    },
+    opts = {
+      preset = "classic",
+      delay = 300,
+      icons = {
+        mappings = false,
+      },
+      spec = {
+        { "<leader>h", group = "help / learning" },
+        { "<leader>c", group = "code" },
+        { "<leader>d", group = "debug" },
+        { "<leader>r", group = "rename / repl" },
+        { "<localleader>", group = "Conjure REPL" },
+      },
+    },
+  },
+
+  -- A small built-in game for drilling Vim motions.
+  -- Run :VimBeGood when you want deliberate practice.
+  {
+    "ThePrimeagen/vim-be-good",
+    cmd = "VimBeGood",
+  },
+
   -- Completion engine: LSP, paths, snippets, buffer words.
   {
     "saghen/blink.cmp",
@@ -187,6 +231,11 @@ return {
       { "<F10>", function() require("dap").step_over() end, desc = "DAP step over" },
       { "<F11>", function() require("dap").step_into() end, desc = "DAP step into" },
       { "<F12>", function() require("dap").step_out() end, desc = "DAP step out" },
+      { "<leader>dc", function() require("dap").continue() end, desc = "Debug continue/start" },
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Debug toggle breakpoint" },
+      { "<leader>do", function() require("dap").step_over() end, desc = "Debug step over" },
+      { "<leader>di", function() require("dap").step_into() end, desc = "Debug step into" },
+      { "<leader>dO", function() require("dap").step_out() end, desc = "Debug step out" },
     },
   },
 
