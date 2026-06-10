@@ -33,5 +33,16 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 opt.number = true
 opt.relativenumber = true
 
+-- Toggle word wrap in the current window/buffer.
+vim.keymap.set("n", "<leader>w", function()
+  vim.wo.wrap = not vim.wo.wrap
+end, { desc = "Toggle word wrap" })
+
+-- Reload the main Neovim config without restarting.
+vim.keymap.set("n", "<leader>R", function()
+  vim.cmd.source(vim.env.MYVIMRC)
+  vim.notify("Reloaded Neovim config", vim.log.levels.INFO)
+end, { desc = "Reload Neovim config" })
+
 -- Plugins
 require("config.lazy")
