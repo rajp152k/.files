@@ -1,4 +1,16 @@
 return {
+  -- Cursorline/cursorcolumn management for the active window.
+  {
+    "Tummetott/reticle.nvim",
+    event = "VeryLazy",
+    opts = {
+      on_startup = {
+        cursorline = true,
+        cursorcolumn = true,
+      },
+    },
+  },
+
   -- LSP config collection. With Neovim 0.11+, installed servers can be enabled
   -- automatically by mason-lspconfig.
   {
@@ -122,6 +134,10 @@ return {
     config = function()
       require("nvim-treesitter").setup()
 
+      -- Install parsers used by render-markdown.nvim and common Markdown
+      -- frontmatter / embedded HTML. This is a no-op when already installed.
+      require("nvim-treesitter").install({ "markdown", "markdown_inline", "html", "yaml" })
+
       -- Start Treesitter highlighting when a parser exists for the filetype.
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)
@@ -129,6 +145,23 @@ return {
         end,
       })
     end,
+  },
+
+  -- Pretty in-buffer Markdown rendering.
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    cmd = { "RenderMarkdown" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    keys = {
+      { "<leader>mr", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle Markdown render" },
+    },
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
   },
 
   -- Self-documenting keymaps. Press <leader>, g, z, ', `, ", or <C-w> and
@@ -160,6 +193,7 @@ return {
       },
       spec = {
         { "<leader>h", group = "help / learning" },
+        { "<leader>m", group = "markdown" },
         { "<leader>c", group = "code" },
         { "<leader>d", group = "debug" },
         { "<leader>r", group = "rename / repl" },
