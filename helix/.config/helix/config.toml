@@ -1,0 +1,3 @@
+# ~/.config/helix/config.toml
+[editor.soft-wrap]
+enable = true
