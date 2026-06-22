@@ -105,7 +105,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
+  ruff = {
+    on_attach = function(client)
+      -- Prefer pyright for Python language features; keep ruff focused on diagnostics and code actions.
+      client.server_capabilities.hoverProvider = false
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end,
+  },
   -- rust_analyzer = {},
   --
   -- Some languages (like typescript) have entire language plugins that can be useful:
