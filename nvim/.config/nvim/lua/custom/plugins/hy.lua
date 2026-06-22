@@ -2,7 +2,7 @@
 
 local function gh(repo) return 'https://github.com/' .. repo end
 
-vim.pack.add { gh 'julienvincent/nvim-paredit' }
+vim.pack.add { gh 'julienvincent/nvim-paredit', gh 'windwp/nvim-autopairs' }
 
 local function register_hy_parser()
   local ok_parsers, parsers = pcall(require, 'nvim-treesitter.parsers')
@@ -27,9 +27,30 @@ vim.api.nvim_create_autocmd('User', {
 })
 
 local ok_paredit, paredit = pcall(require, 'nvim-paredit')
-if ok_paredit then paredit.setup {
-  filetypes = { 'clojure', 'fennel', 'scheme', 'lisp', 'janet', 'hy' },
-  indent = { enabled = true },
+local ok_paredit_api, paredit_api = pcall(require, 'nvim-paredit.api')
+if ok_paredit and ok_paredit_api then
+  paredit.setup {
+    use_default_keys = false,
+    filetypes = { 'hy' },
+    indent = { enabled = true },
+    keys = {
+      ['>)'] = { paredit_api.slurp_forwards, 'Slurp forwards', repeatable = false, mode = { 'n', 'x' } },
+      ['>('] = { paredit_api.barf_backwards, 'Barf backwards', repeatable = false, mode = { 'n', 'x' } },
+      ['<)'] = { paredit_api.barf_forwards, 'Barf forwards', repeatable = false, mode = { 'n', 'x' } },
+      ['<('] = { paredit_api.slurp_backwards, 'Slurp backwards', repeatable = false, mode = { 'n', 'x' } },
+      ['>e'] = { paredit_api.drag_element_forwards, 'Drag element right', repeatable = false, mode = { 'n', 'x' } },
+      ['<e'] = { paredit_api.drag_element_backwards, 'Drag element left', repeatable = false, mode = { 'n', 'x' } },
+      ['<localleader>@'] = { paredit_api.unwrap_form_under_cursor, 'Splice sexp', repeatable = false },
+      ['<localleader>o'] = { paredit_api.raise_form, 'Raise form', repeatable = false },
+      ['<localleader>O'] = { paredit_api.raise_element, 'Raise element', repeatable = false },
+      ['<localleader>w'] = { function() paredit_api.wrap_element_under_cursor('(', ')') end, 'Wrap element', repeatable = false },
+    },
+  }
+end
+
+local ok_autopairs, autopairs = pcall(require, 'nvim-autopairs')
+if ok_autopairs then autopairs.setup {
+  enabled = function(bufnr) return vim.bo[bufnr].filetype == 'hy' end,
 } end
 
 local M = {}
