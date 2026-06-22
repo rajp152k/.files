@@ -19,6 +19,12 @@ local function project_root()
   return vim.fs.root(path, root_markers) or buf_dir or vim.uv.cwd()
 end
 
+local function git_root()
+  local buf_dir = buffer_dir()
+  local path = buf_dir or vim.uv.cwd()
+  return vim.fs.root(path, { '.git' })
+end
+
 local function uv_available()
   if vim.fn.executable 'uv' == 1 then return true end
 
@@ -83,7 +89,7 @@ local function apply_venv(venv_dir)
   return true
 end
 
-local function default_venv_dir() return vim.fs.joinpath(project_root(), '.venv') end
+local function default_venv_dir() return vim.fs.joinpath(git_root() or project_root(), '.venv') end
 
 local function normalize_dir(path) return vim.fs.normalize(vim.fn.fnamemodify(path, ':p')) end
 
