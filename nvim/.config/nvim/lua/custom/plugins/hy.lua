@@ -28,25 +28,10 @@ vim.api.nvim_create_autocmd('User', {
 
 local ok_paredit, paredit = pcall(require, 'nvim-paredit')
 local ok_paredit_api, paredit_api = pcall(require, 'nvim-paredit.api')
-if ok_paredit and ok_paredit_api then
-  paredit.setup {
-    use_default_keys = false,
-    filetypes = { 'hy' },
-    indent = { enabled = true },
-    keys = {
-      ['>)'] = { paredit_api.slurp_forwards, 'Slurp forwards', repeatable = false, mode = { 'n', 'x' } },
-      ['>('] = { paredit_api.barf_backwards, 'Barf backwards', repeatable = false, mode = { 'n', 'x' } },
-      ['<)'] = { paredit_api.barf_forwards, 'Barf forwards', repeatable = false, mode = { 'n', 'x' } },
-      ['<('] = { paredit_api.slurp_backwards, 'Slurp backwards', repeatable = false, mode = { 'n', 'x' } },
-      ['>e'] = { paredit_api.drag_element_forwards, 'Drag element right', repeatable = false, mode = { 'n', 'x' } },
-      ['<e'] = { paredit_api.drag_element_backwards, 'Drag element left', repeatable = false, mode = { 'n', 'x' } },
-      ['<localleader>@'] = { paredit_api.unwrap_form_under_cursor, 'Splice sexp', repeatable = false },
-      ['<localleader>o'] = { paredit_api.raise_form, 'Raise form', repeatable = false },
-      ['<localleader>O'] = { paredit_api.raise_element, 'Raise element', repeatable = false },
-      ['<localleader>w'] = { function() paredit_api.wrap_element_under_cursor('(', ')') end, 'Wrap element', repeatable = false },
-    },
-  }
-end
+if ok_paredit then paredit.setup {
+  filetypes = { 'hy' },
+  indent = { enabled = true },
+} end
 
 local ok_autopairs, autopairs = pcall(require, 'nvim-autopairs')
 if ok_autopairs then autopairs.setup {
@@ -361,8 +346,42 @@ local function ensure_hy_treesitter(buf)
   if ok_install then install:await(function() start_hy_treesitter(buf) end) end
 end
 
+local function smart_angle(key)
+  return function()
+    if not ok_paredit_api then
+      vim.api.nvim_feedkeys(key, 'n', false)
+      return
+    end
+
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    local char = vim.api.nvim_get_current_line():sub(col + 1, col + 1)
+
+    if key == '>' then
+      if char == ')' then
+        paredit_api.slurp_forwards()
+        return
+      elseif char == '(' then
+        paredit_api.barf_backwards()
+        return
+      end
+    elseif key == '<' then
+      if char == ')' then
+        paredit_api.barf_forwards()
+        return
+      elseif char == '(' then
+        paredit_api.slurp_backwards()
+        return
+      end
+    end
+
+    vim.api.nvim_feedkeys(key, 'n', false)
+  end
+end
+
 local function setup_hy_buffer(buf)
   ensure_hy_treesitter(buf)
+  vim.keymap.set('n', '>', smart_angle '>', { buffer = buf, nowait = true, desc = 'Paredit grow/move right' })
+  vim.keymap.set('n', '<', smart_angle '<', { buffer = buf, nowait = true, desc = 'Paredit shrink/move left' })
   local opts = { buffer = buf }
   vim.keymap.set('n', '<leader>hr', M.repl, vim.tbl_extend('force', opts, { desc = '[H]y [R]EPL' }))
   vim.keymap.set('n', '<leader>hR', M.restart_repl, vim.tbl_extend('force', opts, { desc = '[H]y restart [R]EPL' }))
