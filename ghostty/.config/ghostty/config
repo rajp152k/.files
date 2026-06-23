@@ -1,0 +1,15 @@
+theme = bit-mage
+font-family = "Terminess Nerd Font Mono"
+
+# Window settings
+background-opacity = 1.0
+minimum-contrast = 1.1
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+
+# Send Option (incl. remapped Windows key) as Esc+/Meta instead of
+# composing characters (Opt+Z was inserting Ω). Needed for omp Alt+ chords.
+# Use "left" or "right" instead of "true" to keep one side for symbols.
+macos-option-as-alt = true

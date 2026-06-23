@@ -120,7 +120,17 @@ local servers = {
   --    https://github.com/pmizio/typescript-tools.nvim
   --
   -- But for many setups, the LSP (`ts_ls`) will work just fine
-  -- ts_ls = {},
+  ts_ls = {
+    on_attach = function(client)
+      -- Prefer conform.nvim/prettier for JS/TS formatting.
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end,
+    settings = {
+      javascript = { format = { enable = false } },
+      typescript = { format = { enable = false } },
+    },
+  },
 
   marksman = {},
   stylua = {}, -- Used to format Lua code
@@ -177,9 +187,13 @@ require('mason').setup {}
 --    :Mason
 --
 -- You can press `g?` for help in this menu.
-local ensure_installed = vim.tbl_keys(servers or {})
+local ensure_installed = vim.tbl_filter(function(tool)
+  return tool ~= 'ts_ls'
+end, vim.tbl_keys(servers or {}))
 vim.list_extend(ensure_installed, {
-  -- You can add other tools here that you want Mason to install
+  'typescript-language-server',
+  'prettier',
+  'prettierd',
 })
 
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }

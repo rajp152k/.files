@@ -348,40 +348,58 @@ end
 
 local function smart_angle(key)
   return function()
-    if not ok_paredit_api then
-      vim.api.nvim_feedkeys(key, 'n', false)
-      return
-    end
+    if not ok_paredit_api then return key end
 
     local col = vim.api.nvim_win_get_cursor(0)[2]
     local char = vim.api.nvim_get_current_line():sub(col + 1, col + 1)
+    local action = nil
 
     if key == '>' then
       if char == ')' then
-        paredit_api.slurp_forwards()
-        return
+        action = paredit_api.slurp_forwards
       elseif char == '(' then
-        paredit_api.barf_backwards()
-        return
+        action = paredit_api.barf_backwards
       end
     elseif key == '<' then
       if char == ')' then
-        paredit_api.barf_forwards()
-        return
+        action = paredit_api.barf_forwards
       elseif char == '(' then
-        paredit_api.slurp_backwards()
-        return
+        action = paredit_api.slurp_backwards
       end
     end
 
-    vim.api.nvim_feedkeys(key, 'n', false)
+    if action then
+      vim.schedule(action)
+      return '<Ignore>'
+    end
+
+    return key
   end
+end
+
+local function make_insert_pair_maps_nowait(buf)
+  vim.schedule(function()
+    for _, lhs in ipairs { '(', ')', '[', ']', '{', '}', '"', "'", '`', '<BS>' } do
+      local map = vim.fn.maparg(lhs, 'i', false, true)
+      if map and map.buffer == 1 and map.callback then
+        vim.keymap.set('i', lhs, map.callback, {
+          buffer = buf,
+          desc = map.desc,
+          expr = map.expr == 1,
+          noremap = map.noremap == 1,
+          nowait = true,
+          replace_keycodes = map.replace_keycodes == 1,
+        })
+      end
+    end
+  end)
 end
 
 local function setup_hy_buffer(buf)
   ensure_hy_treesitter(buf)
-  vim.keymap.set('n', '>', smart_angle '>', { buffer = buf, nowait = true, desc = 'Paredit grow/move right' })
-  vim.keymap.set('n', '<', smart_angle '<', { buffer = buf, nowait = true, desc = 'Paredit shrink/move left' })
+  vim.keymap.set('n', '>', smart_angle '>', { buffer = buf, expr = true, nowait = true, desc = 'Paredit grow/move right' })
+  vim.keymap.set('n', '<', smart_angle '<', { buffer = buf, expr = true, nowait = true, desc = 'Paredit shrink/move left' })
+  make_insert_pair_maps_nowait(buf)
   local opts = { buffer = buf }
   vim.keymap.set('n', '<leader>hr', M.repl, vim.tbl_extend('force', opts, { desc = '[H]y [R]EPL' }))
   vim.keymap.set('n', '<leader>hR', M.restart_repl, vim.tbl_extend('force', opts, { desc = '[H]y restart [R]EPL' }))
