@@ -3,6 +3,8 @@ local function gh(repo) return 'https://github.com/' .. repo end
 vim.pack.add {
   gh 'MeanderingProgrammer/render-markdown.nvim',
   gh 'tadmccorkle/markdown.nvim',
+  gh '3rd/image.nvim',
+  gh '3rd/diagram.nvim',
 }
 
 require('render-markdown').setup {
@@ -26,12 +28,45 @@ require('render-markdown').setup {
   },
 }
 
+require('image').setup {
+  backend = 'kitty',
+  processor = 'magick_cli',
+  integrations = {
+    markdown = {
+      enabled = true,
+      clear_in_insert_mode = true,
+      download_remote_images = false,
+      only_render_image_at_cursor = true,
+      only_render_image_at_cursor_mode = 'popup',
+      floating_windows = false,
+      filetypes = { 'markdown' },
+    },
+  },
+}
+
+require('diagram').setup {
+  integrations = {
+    require 'diagram.integrations.markdown',
+  },
+  events = {
+    render_buffer = {},
+    clear_buffer = { 'BufLeave' },
+  },
+  renderer_options = {
+    mermaid = {
+      theme = 'dark',
+      scale = 2,
+    },
+  },
+}
+
 require('markdown').setup {
   on_attach = function(bufnr)
     local function map(mode, lhs, rhs, desc) vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc }) end
 
     map('n', '<leader>mt', '<Cmd>RenderMarkdown buf_toggle<CR>', '[M]arkdown render [T]oggle')
     map('n', '<leader>mp', '<Cmd>RenderMarkdown preview<CR>', '[M]arkdown render [P]review')
+    map('n', '<leader>md', function() require('diagram').show_diagram_hover() end, '[M]arkdown [D]iagram preview')
     map('n', '<leader>mx', '<Cmd>MDTaskToggle<CR>', '[M]arkdown task toggle')
     map('x', '<leader>mx', ':MDTaskToggle<CR>', '[M]arkdown task toggle')
     map('n', '<leader>mo', '<Cmd>MDListItemBelow<CR>', '[M]arkdown list item bel[O]w')
