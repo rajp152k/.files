@@ -7,6 +7,8 @@ require('conform').setup {
   format_on_save = function(bufnr)
     -- You can specify filetypes to autoformat on save here:
     local enabled_filetypes = {
+      javascript = true,
+      javascriptreact = true,
       -- lua = true,
       -- python = true,
     }

@@ -132,6 +132,17 @@ local servers = {
     },
   },
 
+  eslint = {
+    on_attach = function(client)
+      -- Prefer conform.nvim/prettier for JS/TS formatting; keep ESLint for diagnostics and code actions.
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end,
+    settings = {
+      workingDirectories = { mode = 'auto' },
+    },
+  },
+
   marksman = {},
   stylua = {}, -- Used to format Lua code
 
@@ -187,13 +198,12 @@ require('mason').setup {}
 --    :Mason
 --
 -- You can press `g?` for help in this menu.
-local ensure_installed = vim.tbl_filter(function(tool)
-  return tool ~= 'ts_ls'
-end, vim.tbl_keys(servers or {}))
+local ensure_installed = vim.tbl_filter(function(tool) return tool ~= 'ts_ls' end, vim.tbl_keys(servers or {}))
 vim.list_extend(ensure_installed, {
-  'typescript-language-server',
+  'eslint-lsp',
   'prettier',
   'prettierd',
+  'typescript-language-server',
 })
 
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
