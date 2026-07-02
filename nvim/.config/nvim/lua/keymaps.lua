@@ -31,6 +31,17 @@ vim.diagnostic.config {
 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- Edit this config file directly
+vim.keymap.set('n', '<leader>ec', function()
+  vim.cmd('edit ' .. vim.fn.stdpath 'config' .. '/init.lua')
+end, { desc = '[E]dit [C]onfig' })
+
+-- Reload Neovim config
+vim.keymap.set('n', '<leader>r', function()
+  vim.cmd('luafile ' .. vim.fn.stdpath 'config' .. '/init.lua')
+  vim.notify('Neovim config reloaded')
+end, { desc = 'Reload config' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
