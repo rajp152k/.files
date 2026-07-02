@@ -1,0 +1,5 @@
+.gitignore
+.pi/agent/auth.json
+.pi/agent/trust.json
+.pi/agent/sessions/
+.pi/agent/sessions/*

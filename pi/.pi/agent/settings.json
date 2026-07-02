@@ -1,0 +1,19 @@
+{
+  "lastChangelogVersion": "0.80.2",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.3-codex-spark",
+  "defaultThinkingLevel": "minimal",
+  "steeringMode": "one-at-a-time",
+  "followUpMode": "one-at-a-time",
+  "transport": "sse",
+  "hideThinkingBlock": false,
+  "collapseChangelog": true,
+  "quietStartup": false,
+  "enableInstallTelemetry": false,
+  "doubleEscapeAction": "tree",
+  "treeFilterMode": "default",
+  "theme": "dark",
+  "packages": [
+    "npm:pi-web-access"
+  ]
+}
