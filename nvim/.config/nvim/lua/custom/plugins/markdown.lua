@@ -60,6 +60,30 @@ require('diagram').setup {
   },
 }
 
+-- Heading-based folding with fenced code-block folds.
+_G.MarkdownHeadingFold = function(lnum)
+  local line = vim.fn.getline(lnum)
+
+  -- Toggle code fences open/close.
+  if line:match '^%s*```+%s*.*' or line:match '^%s*~~~+%s*.*' then
+    local fence_count_before = 0
+    for i = 1, lnum - 1 do
+      local prev = vim.fn.getline(i)
+      if prev:match '^%s*```+%s*.*' or prev:match '^%s*~~~+%s*.*' then
+        fence_count_before = fence_count_before + 1
+      end
+    end
+    return fence_count_before % 2 == 0 and 'a1' or 's1'
+  end
+
+  -- Heading-based folds: # => 1, ## => 2, etc.
+  local heading = line:match '^(#+)%s+'
+  if heading and #heading <= 6 then
+    return '>' .. #heading
+  end
+  return '='
+end
+
 require('markdown').setup {
   on_attach = function(bufnr)
     local function map(mode, lhs, rhs, desc) vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc }) end
@@ -85,6 +109,11 @@ vim.api.nvim_create_autocmd('FileType', {
     -- Builtin matchparen can visibly block on `)` in large markdown files while
     -- scanning links/prose. Markdown does not need structural paren matching.
     vim.opt_local.matchpairs = ''
+
+    vim.opt_local.foldmethod = 'expr'
+    vim.opt_local.foldexpr = 'v:lua.MarkdownHeadingFold(v:lnum)'
+    vim.opt_local.foldlevel = 99
+    vim.opt_local.foldenable = true
   end,
 })
 
