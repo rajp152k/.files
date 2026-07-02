@@ -56,9 +56,7 @@ startup:
   quiet: true
 autoResume: true
 power: 
-  preventSystemSleep: true
-  declareUserActive: true
-  preventDisplaySleep: true
+  sleepPrevention: system
 contextPromotion: 
   enabled: false
 branchSummary: 
