@@ -1,0 +1,27 @@
+# Solarized Light with stronger text/ANSI contrast for comfortable lower brightness.
+background = #fdf6e3
+foreground = #40565c
+
+cursor-color = #40565c
+cursor-text = #fdf6e3
+selection-background = #c8d7d4
+selection-foreground = #263f45
+
+# Darkened Solarized accents keep the hue relationships while remaining legible
+# on base3. Bright variants remain distinct without becoming pastel.
+palette = 0=#263f45
+palette = 1=#c23b22
+palette = 2=#607400
+palette = 3=#826200
+palette = 4=#006a96
+palette = 5=#963e82
+palette = 6=#16716d
+palette = 7=#eee8d5
+palette = 8=#586e75
+palette = 9=#d34b31
+palette = 10=#718500
+palette = 11=#947200
+palette = 12=#087da8
+palette = 13=#a84d94
+palette = 14=#238580
+palette = 15=#fdf6e3

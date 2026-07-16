@@ -1,9 +1,10 @@
-theme = bit-mage
-font-family = "Terminess Nerd Font Mono"
+theme = solarized-light-high-contrast
+font-family = "Iosevka"
 
-# Window settings
+# An opaque background prevents the desktop from washing out text at lower
+# display brightness. Enforce a useful floor for application-defined colours.
 background-opacity = 1.0
-minimum-contrast = 1.1
+minimum-contrast = 3.0
 
 # Cursor
 cursor-style = block

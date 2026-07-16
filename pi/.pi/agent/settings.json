@@ -1,19 +1,26 @@
 {
-  "lastChangelogVersion": "0.80.2",
+  "lastChangelogVersion": "0.80.7",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex-spark",
+  "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "minimal",
   "steeringMode": "one-at-a-time",
   "followUpMode": "one-at-a-time",
   "transport": "sse",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "collapseChangelog": true,
-  "quietStartup": false,
+  "quietStartup": true,
   "enableInstallTelemetry": false,
   "doubleEscapeAction": "tree",
   "treeFilterMode": "default",
-  "theme": "dark",
+  "theme": "light",
   "packages": [
-    "npm:pi-web-access"
-  ]
+    "npm:pi-web-access",
+    "npm:pi-mermaid",
+    "npm:pi-subagents",
+    "npm:pi-lens",
+    "npm:pi-simplify"
+  ],
+  "compaction": {
+    "enabled": true
+  }
 }
