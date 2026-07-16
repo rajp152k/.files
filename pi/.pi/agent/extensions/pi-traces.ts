@@ -33,6 +33,24 @@ function traceId(reference: string): string {
 	throw new Error(`Could not extract a trace ID from: ${reference}`);
 }
 
+function truncatedOutput(
+	output: string,
+	label: string,
+): {
+	text: string;
+	truncated: boolean;
+} {
+	const truncation = truncateHead(output, {
+		maxLines: DEFAULT_MAX_LINES,
+		maxBytes: DEFAULT_MAX_BYTES,
+	});
+	let text = truncation.content;
+	if (truncation.truncated) {
+		text += `\n\n[${label} truncated: showing ${truncation.outputLines}/${truncation.totalLines} lines (${formatSize(truncation.outputBytes)}/${formatSize(truncation.totalBytes)}).]`;
+	}
+	return { text, truncated: truncation.truncated };
+}
+
 export default function piTraces(pi: ExtensionAPI) {
 	pi.registerTool({
 		name: "traces_show",
@@ -41,7 +59,8 @@ export default function piTraces(pi: ExtensionAPI) {
 		promptSnippet:
 			"Load a traces.com trace link or trace ID using the traces CLI",
 		promptGuidelines: [
-			"Use traces_show whenever the user pastes a traces.com link or explicitly asks you to inspect, open, read, or look at a particular trace. Do not use fetch_content or web tools for trace links.",
+			"Use traces_show whenever the user pastes a traces.com link or supplies a trace ID. Do not use fetch_content or web tools for trace links.",
+			"When the user asks about a local, recent, previous, or current trace without supplying a link or ID, use traces_search first, then traces_show on the matching trace ID when its full conversation is needed.",
 		],
 		parameters: Type.Object({
 			reference: Type.String({
@@ -86,22 +105,96 @@ export default function piTraces(pi: ExtensionAPI) {
 				);
 			}
 
-			const truncation = truncateHead(result.stdout, {
-				maxLines: DEFAULT_MAX_LINES,
-				maxBytes: DEFAULT_MAX_BYTES,
-			});
-			let text = truncation.content;
-			if (truncation.truncated) {
-				text += `\n\n[Trace output truncated: showing ${truncation.outputLines}/${truncation.totalLines} lines (${formatSize(truncation.outputBytes)}/${formatSize(truncation.totalBytes)}). Call traces_show again with the relevant trace and use focused CLI searches via bash if more detail is needed.]`;
-			}
+			const output = truncatedOutput(result.stdout, "Trace output");
 
 			return {
-				content: [{ type: "text", text }],
+				content: [{ type: "text", text: output.text }],
 				details: {
 					traceId: id,
 					reference: params.reference,
 					eventTypes,
-					truncated: truncation.truncated,
+					truncated: output.truncated,
+				},
+			};
+		},
+	});
+
+	pi.registerTool({
+		name: "traces_search",
+		label: "Search Traces",
+		description: `Search locally indexed agent traces through the traces CLI. Omit query to list recent local traces. Returns bounded output truncated to ${DEFAULT_MAX_LINES} lines or ${formatSize(DEFAULT_MAX_BYTES)}.`,
+		promptSnippet:
+			"Search local agent traces by text, or list recent traces when no query is available",
+		promptGuidelines: [
+			"Use traces_search when the user refers to a local, recent, previous, or current trace/session without providing a traces.com link or trace ID. Use the returned trace ID with traces_show when conversation details are needed.",
+		],
+		parameters: Type.Object({
+			query: Type.Optional(
+				Type.String({
+					description:
+						"Text or case-insensitive regex to search for. Omit to list recent traces.",
+				}),
+			),
+			includeTools: Type.Optional(
+				Type.Boolean({
+					description: "Include tool calls/results in searched event text",
+				}),
+			),
+			limit: Type.Optional(
+				Type.Integer({
+					minimum: 1,
+					maximum: 50,
+					description: "Maximum matches or recent traces (default 20)",
+				}),
+			),
+		}),
+		async execute(_toolCallId, params, signal) {
+			const limit = String(params.limit ?? 20);
+			const query = params.query?.trim();
+			const eventTypes = params.includeTools
+				? "user_message,agent_text,tool_call,tool_result"
+				: "user_message,agent_text";
+			const args = query
+				? [
+						"search",
+						query,
+						"--source",
+						"event",
+						"--event-type",
+						eventTypes,
+						"--result-level",
+						"event",
+						"--limit",
+						limit,
+						"--scan-events-per-trace",
+						"100",
+					]
+				: ["list", "--limit", limit];
+			const result = await pi.exec("traces", args, {
+				signal,
+				timeout: 30_000,
+			});
+
+			if (result.code !== 0) {
+				throw new Error(
+					result.stderr.trim() ||
+						result.stdout.trim() ||
+						`traces ${query ? "search" : "list"} failed (${result.code})`,
+				);
+			}
+
+			const output = truncatedOutput(
+				result.stdout,
+				query ? "Trace search output" : "Trace list output",
+			);
+			return {
+				content: [{ type: "text", text: output.text }],
+				details: {
+					mode: query ? "search" : "list",
+					query,
+					includeTools: params.includeTools ?? false,
+					limit: Number(limit),
+					truncated: output.truncated,
 				},
 			};
 		},
@@ -110,11 +203,23 @@ export default function piTraces(pi: ExtensionAPI) {
 	pi.on("input", (event) => {
 		if (event.source === "extension") return { action: "continue" };
 		const links = event.text.match(TRACE_URL);
-		if (!links?.length) return { action: "continue" };
+		if (links?.length) {
+			return {
+				action: "transform",
+				text: `${event.text}\n\n[pi-traces: Inspect ${links.join(", ")} with traces_show before answering.]`,
+			};
+		}
+
+		const asksForLocalTrace =
+			/\b(?:trace|traces)\b/i.test(event.text) &&
+			/\b(?:search|find|inspect|open|read|look|investigate|evaluate|local|recent|previous|current|this|last)\b/i.test(
+				event.text,
+			);
+		if (!asksForLocalTrace) return { action: "continue" };
 
 		return {
 			action: "transform",
-			text: `${event.text}\n\n[pi-traces: Inspect ${links.join(", ")} with traces_show before answering.]`,
+			text: `${event.text}\n\n[pi-traces: No trace link was supplied. Search locally indexed traces with traces_search before answering; use traces_show on the matching trace ID if details are needed.]`,
 		};
 	});
 }

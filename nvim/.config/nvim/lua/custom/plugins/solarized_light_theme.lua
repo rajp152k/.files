@@ -1,25 +1,32 @@
--- Bit-Mage inspired high-contrast theme.
--- Reference: https://github.com/rajp152k/bit-mage-theme.el
+-- Solarized Light with stronger contrast, matching Ghostty and tmux.
 
 local palette = {
-  bg = '#050505',
-  bg_dark = '#000000',
-  bg_float = '#101010',
-  bg_highlight = '#1a1a1a',
-  bg_selection = '#2a0040',
-  fg = '#22dd22',
-  fg_bright = '#00ff00',
-  fg_dim = '#1a9e1a',
-  green = '#00ff7f',
-  green_dark = '#2a8e2a',
-  blue = '#7b68ee',
-  blue_dim = '#5f4fcf',
-  purple = '#8b008b',
-  cyan = '#00ffff',
-  yellow = '#ffd700',
-  orange = '#ffaf00',
-  red = '#ff5f5f',
-  gray = '#808080',
+  bg = '#fdf6e3',
+  bg_dark = '#eee8d5',
+  bg_float = '#eee8d5',
+  bg_highlight = '#ded7c3',
+  bg_selection = '#c8d7d4',
+  bg_yellow = '#eee5be',
+  bg_orange = '#f1dfb8',
+  bg_green = '#e4edcf',
+  bg_blue = '#d5e8ed',
+  bg_purple = '#eaddea',
+  bg_red = '#f3d8cf',
+  fg = '#40565c',
+  fg_bright = '#263f45',
+  fg_dim = '#657b83',
+  green = '#607400',
+  green_dark = '#526a38',
+  blue = '#006a96',
+  blue_dim = '#087da8',
+  purple = '#963e82',
+  cyan = '#16716d',
+  yellow = '#826200',
+  orange = '#947200',
+  red = '#c23b22',
+  gray = '#586e75',
+  contrast = '#263f45',
+  white = '#fdf6e3',
 }
 
 local function hl(group, opts)
@@ -27,7 +34,7 @@ local function hl(group, opts)
 end
 
 local function apply()
-  vim.g.colors_name = 'bit-mage'
+  vim.g.colors_name = 'solarized-light-high-contrast'
 
   hl('Normal', { fg = palette.fg, bg = palette.bg })
   hl('NormalNC', { fg = palette.fg_dim, bg = palette.bg })
@@ -39,12 +46,13 @@ local function apply()
   hl('CursorLine', { bg = palette.bg_highlight })
   hl('ColorColumn', { bg = palette.bg_float })
   hl('Visual', { bg = palette.bg_selection })
-  hl('Search', { fg = palette.bg_dark, bg = palette.yellow, bold = true })
-  hl('IncSearch', { fg = palette.bg_dark, bg = palette.orange, bold = true })
-  hl('CurSearch', { fg = palette.bg_dark, bg = palette.orange, bold = true })
-  hl('MatchParen', { fg = palette.fg_bright, bg = palette.purple, bold = true })
+  -- On a light theme, dark accents are foregrounds; backgrounds use pale tints.
+  hl('Search', { fg = palette.contrast, bg = palette.bg_yellow, bold = true })
+  hl('IncSearch', { fg = palette.contrast, bg = palette.bg_orange, bold = true })
+  hl('CurSearch', { fg = palette.contrast, bg = palette.bg_orange, bold = true })
+  hl('MatchParen', { fg = palette.white, bg = palette.purple, bold = true })
   hl('Pmenu', { fg = palette.fg, bg = palette.bg_float })
-  hl('PmenuSel', { fg = palette.bg_dark, bg = palette.green, bold = true })
+  hl('PmenuSel', { fg = palette.white, bg = palette.green, bold = true })
   hl('PmenuThumb', { bg = palette.green_dark })
   hl('WinSeparator', { fg = palette.blue_dim, bg = palette.bg })
   hl('StatusLine', { fg = palette.fg_bright, bg = palette.bg_float })
@@ -65,13 +73,13 @@ local function apply()
   hl('ModeMsg', { fg = palette.fg_bright, bg = palette.bg, bold = true })
   hl('MoreMsg', { fg = palette.green, bg = palette.bg })
   hl('Question', { fg = palette.cyan, bg = palette.bg })
-  hl('WildMenu', { fg = palette.bg_dark, bg = palette.green, bold = true })
-  hl('MiniStatuslineModeNormal', { fg = palette.bg_dark, bg = palette.fg_bright, bold = true })
-  hl('MiniStatuslineModeInsert', { fg = palette.bg_dark, bg = palette.green, bold = true })
-  hl('MiniStatuslineModeVisual', { fg = palette.bg_dark, bg = palette.purple, bold = true })
-  hl('MiniStatuslineModeReplace', { fg = palette.bg_dark, bg = palette.red, bold = true })
-  hl('MiniStatuslineModeCommand', { fg = palette.bg_dark, bg = palette.yellow, bold = true })
-  hl('MiniStatuslineModeOther', { fg = palette.bg_dark, bg = palette.cyan, bold = true })
+  hl('WildMenu', { fg = palette.white, bg = palette.green, bold = true })
+  hl('MiniStatuslineModeNormal', { fg = palette.white, bg = palette.blue, bold = true })
+  hl('MiniStatuslineModeInsert', { fg = palette.white, bg = palette.green, bold = true })
+  hl('MiniStatuslineModeVisual', { fg = palette.white, bg = palette.purple, bold = true })
+  hl('MiniStatuslineModeReplace', { fg = palette.white, bg = palette.red, bold = true })
+  hl('MiniStatuslineModeCommand', { fg = palette.white, bg = palette.yellow, bold = true })
+  hl('MiniStatuslineModeOther', { fg = palette.white, bg = palette.cyan, bold = true })
   hl('MiniStatuslineDevinfo', { fg = palette.cyan, bg = palette.bg_highlight })
   hl('MiniStatuslineFilename', { fg = palette.fg_bright, bg = palette.bg_float, bold = true })
   hl('MiniStatuslineFileinfo', { fg = palette.yellow, bg = palette.bg_highlight })
@@ -96,7 +104,7 @@ local function apply()
   hl('Type', { fg = palette.blue })
   hl('Special', { fg = palette.cyan })
   hl('Underlined', { fg = palette.cyan, underline = true })
-  hl('Todo', { fg = palette.bg_dark, bg = palette.orange, bold = true })
+  hl('Todo', { fg = palette.contrast, bg = palette.bg_orange, bold = true })
 
   hl('@variable', { fg = palette.fg })
   hl('@variable.builtin', { fg = palette.cyan })
@@ -126,10 +134,10 @@ local function apply()
   hl('DiagnosticUnderlineInfo', { undercurl = true, sp = palette.cyan })
   hl('DiagnosticUnderlineHint', { undercurl = true, sp = palette.green })
 
-  hl('DiffAdd', { fg = palette.green, bg = '#002a00' })
-  hl('DiffChange', { fg = palette.yellow, bg = '#2a2200' })
-  hl('DiffDelete', { fg = palette.red, bg = '#2a0000' })
-  hl('DiffText', { fg = palette.bg_dark, bg = palette.orange, bold = true })
+  hl('DiffAdd', { fg = palette.green, bg = palette.bg_green })
+  hl('DiffChange', { fg = palette.yellow, bg = palette.bg_yellow })
+  hl('DiffDelete', { fg = palette.red, bg = palette.bg_red })
+  hl('DiffText', { fg = palette.contrast, bg = palette.bg_orange, bold = true })
   hl('Added', { fg = palette.green })
   hl('Changed', { fg = palette.orange })
   hl('Removed', { fg = palette.red })
@@ -145,32 +153,60 @@ local function apply()
   hl('WhichKeyDesc', { fg = palette.green })
   hl('WhichKeyGroup', { fg = palette.blue })
   hl('BlinkCmpMenu', { fg = palette.fg, bg = palette.bg_float })
-  hl('BlinkCmpMenuSelection', { fg = palette.bg_dark, bg = palette.green, bold = true })
+  hl('BlinkCmpMenuSelection', { fg = palette.white, bg = palette.green, bold = true })
   hl('BlinkCmpLabelMatch', { fg = palette.yellow, bold = true })
-  hl('MarkdownH1', { fg = palette.fg_bright, bold = true })
+  hl('MarkdownH1', { fg = palette.blue, bold = true })
   hl('MarkdownH2', { fg = palette.green, bold = true })
   hl('MarkdownCode', { fg = palette.green, bg = palette.bg_float })
 
-  vim.g.terminal_color_0 = palette.bg_dark
+  -- render-markdown uses full-width heading backgrounds. Keep every pairing
+  -- dark-on-pale rather than inheriting its dark-theme defaults.
+  local heading_backgrounds = {
+    palette.bg_blue,
+    palette.bg_green,
+    palette.bg_yellow,
+    palette.bg_purple,
+    palette.bg_orange,
+    palette.bg_red,
+  }
+  local heading_foregrounds = {
+    palette.blue,
+    palette.green,
+    palette.yellow,
+    palette.purple,
+    palette.orange,
+    palette.red,
+  }
+  for level = 1, 6 do
+    hl('RenderMarkdownH' .. level, { fg = heading_foregrounds[level], bold = true })
+    hl('RenderMarkdownH' .. level .. 'Bg', {
+      fg = palette.contrast,
+      bg = heading_backgrounds[level],
+      bold = true,
+    })
+  end
+
+  -- Keep Neovim's terminal palette identical to Ghostty's theme.
+  vim.g.terminal_color_0 = palette.contrast
   vim.g.terminal_color_1 = palette.red
   vim.g.terminal_color_2 = palette.green
-  vim.g.terminal_color_3 = palette.orange
+  vim.g.terminal_color_3 = palette.yellow
   vim.g.terminal_color_4 = palette.blue
   vim.g.terminal_color_5 = palette.purple
   vim.g.terminal_color_6 = palette.cyan
-  vim.g.terminal_color_7 = palette.fg
+  vim.g.terminal_color_7 = palette.bg_dark
   vim.g.terminal_color_8 = palette.gray
-  vim.g.terminal_color_9 = palette.red
-  vim.g.terminal_color_10 = palette.fg_bright
-  vim.g.terminal_color_11 = palette.yellow
-  vim.g.terminal_color_12 = palette.blue
-  vim.g.terminal_color_13 = palette.purple
-  vim.g.terminal_color_14 = palette.cyan
-  vim.g.terminal_color_15 = '#ffffff'
+  vim.g.terminal_color_9 = '#d34b31'
+  vim.g.terminal_color_10 = '#718500'
+  vim.g.terminal_color_11 = '#947200'
+  vim.g.terminal_color_12 = palette.blue_dim
+  vim.g.terminal_color_13 = '#a84d94'
+  vim.g.terminal_color_14 = '#238580'
+  vim.g.terminal_color_15 = palette.white
 end
 
 vim.api.nvim_create_autocmd({ 'ColorScheme', 'VimEnter' }, {
-  group = vim.api.nvim_create_augroup('bit_mage_theme', { clear = true }),
+  group = vim.api.nvim_create_augroup('solarized_light_theme', { clear = true }),
   callback = apply,
 })
 
