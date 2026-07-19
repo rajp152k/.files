@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.80.7",
+  "lastChangelogVersion": "0.80.10",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "minimal",
+  "defaultThinkingLevel": "max",
   "steeringMode": "one-at-a-time",
   "followUpMode": "one-at-a-time",
   "transport": "sse",
@@ -12,7 +12,7 @@
   "enableInstallTelemetry": false,
   "doubleEscapeAction": "tree",
   "treeFilterMode": "default",
-  "theme": "light",
+  "theme": "dark",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mermaid",
