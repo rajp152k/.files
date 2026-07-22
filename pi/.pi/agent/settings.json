@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.81.1",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
+  "defaultModel": "gpt-5.6-terra",
   "defaultThinkingLevel": "minimal",
   "steeringMode": "one-at-a-time",
   "followUpMode": "one-at-a-time",
@@ -14,13 +14,16 @@
   "treeFilterMode": "default",
   "theme": "dark",
   "packages": [
-    "npm:pi-web-access",
-    "npm:pi-mermaid",
-    "npm:pi-subagents",
-    "npm:pi-lens",
-    "npm:pi-simplify",
     "npm:pi-openai-fast-mode",
-    "npm:pi-vim"
+    "npm:@juicesharp/rpiv-pi",
+    "npm:@tintinweb/pi-subagents",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@juicesharp/rpiv-advisor",
+    "npm:@juicesharp/rpiv-i18n",
+    "npm:@juicesharp/rpiv-web-tools",
+    "npm:@juicesharp/rpiv-args",
+    "npm:@juicesharp/rpiv-workflow"
   ],
   "compaction": {
     "enabled": true
