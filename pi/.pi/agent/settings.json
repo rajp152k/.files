@@ -22,9 +22,12 @@
     {
       "source": "git:github.com/rajp152k/pi-exts",
       "extensions": [
-        "+extensions/rp152kpi:notify/index.ts"
+        "+extensions/rp152kpi:notify/index.ts",
+        "+extensions/rp152kpi:traces/index.ts"
       ],
-      "skills": [],
+      "skills": [
+        "+skills/pi-traces/SKILL.md"
+      ],
       "prompts": [],
       "themes": []
     }
