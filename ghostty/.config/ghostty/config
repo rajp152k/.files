@@ -1,5 +1,6 @@
 theme = modern-dark-high-contrast
-font-family = "Iosevka"
+font-family = "VT323"
+font-size = 32
 
 # Keep the neutral near-black foundation opaque and preserve readable
 # application colours without artificially flattening the palette.
