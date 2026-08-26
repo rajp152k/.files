@@ -1,15 +1,36 @@
-theme = modern-dark-high-contrast
+# High-contrast green on black.
+background = #000000
+foreground = #00ff00
 font-family = "VT323"
-font-size = 24
-
-# Keep the neutral near-black foundation opaque and preserve readable
-# application colours without artificially flattening the palette.
+font-size = 26
 background-opacity = 1.0
-minimum-contrast = 3.0
+minimum-contrast = 1.0
 
-# Cursor
+# Monochrome ANSI palette.
+palette = 0=#000000
+palette = 1=#00ff00
+palette = 2=#00ff00
+palette = 3=#7fff00
+palette = 4=#00ff00
+palette = 5=#39ff14
+palette = 6=#00ff00
+palette = 7=#ccffcc
+palette = 8=#006600
+palette = 9=#39ff14
+palette = 10=#39ff14
+palette = 11=#b6ff00
+palette = 12=#39ff14
+palette = 13=#7fff00
+palette = 14=#b6ff00
+palette = 15=#ffffff
+
+# Fixed block cursor and green selection.
 cursor-style = block
-cursor-style-blink = true
+cursor-style-blink = false
+cursor-color = #ffffff
+cursor-text = #000000
+selection-background = #00b300
+selection-foreground = #000000
 
 # Send Option (incl. remapped Windows key) as Esc+/Meta instead of
 # composing characters (Opt+Z was inserting Ω). Needed for omp Alt+ chords.
