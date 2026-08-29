@@ -1,31 +1,31 @@
--- Modern neutral dark theme with crisp contrast and restrained accents.
+-- High-contrast green on black.
 
 local palette = {
-  bg = '#0b0d10',
-  bg_dark = '#080a0c',
-  bg_float = '#12161b',
-  bg_highlight = '#181d23',
-  bg_selection = '#293341',
-  bg_yellow = '#332a16',
-  bg_orange = '#352319',
-  bg_green = '#172b20',
-  bg_blue = '#17283d',
-  bg_purple = '#2a2038',
-  bg_red = '#351d20',
-  fg = '#e6edf3',
+  bg = '#000000',
+  bg_dark = '#000000',
+  bg_float = '#000000',
+  bg_highlight = '#002b00',
+  bg_selection = '#00b300',
+  bg_yellow = '#003b00',
+  bg_orange = '#004d00',
+  bg_green = '#003b00',
+  bg_blue = '#002b00',
+  bg_purple = '#004000',
+  bg_red = '#005200',
+  fg = '#00ff00',
   fg_bright = '#ffffff',
-  fg_dim = '#9aa7b2',
-  green = '#7ee787',
-  green_dark = '#3fb950',
-  blue = '#58a6ff',
-  blue_dim = '#388bfd',
-  purple = '#bc8cff',
-  cyan = '#56d4dd',
-  yellow = '#e3b341',
-  orange = '#f0883e',
-  red = '#ff7b72',
-  gray = '#8b949e',
-  contrast = '#0b0d10',
+  fg_dim = '#39ff14',
+  green = '#00ff00',
+  green_dark = '#006600',
+  blue = '#39ff14',
+  blue_dim = '#00b300',
+  purple = '#7fff00',
+  cyan = '#b6ff00',
+  yellow = '#b6ff00',
+  orange = '#7fff00',
+  red = '#39ff14',
+  gray = '#00b300',
+  contrast = '#000000',
   white = '#ffffff',
 }
 
@@ -34,7 +34,7 @@ local function hl(group, opts)
 end
 
 local function apply()
-  vim.g.colors_name = 'modern-dark-high-contrast'
+  vim.g.colors_name = 'green-black-high-contrast'
 
   hl('Normal', { fg = palette.fg, bg = palette.bg })
   hl('NormalNC', { fg = palette.fg_dim, bg = palette.bg })
@@ -46,7 +46,7 @@ local function apply()
   hl('CursorLine', { bg = palette.bg_highlight })
   hl('ColorColumn', { bg = palette.bg_float })
   hl('Visual', { bg = palette.bg_selection })
-  -- Saturated accents remain foregrounds; tinted surfaces carry highlighted text.
+  -- Bright text is reserved for active targets; surfaces remain black or deep green.
   hl('Search', { fg = palette.contrast, bg = palette.yellow, bold = true })
   hl('IncSearch', { fg = palette.contrast, bg = palette.orange, bold = true })
   hl('CurSearch', { fg = palette.contrast, bg = palette.orange, bold = true })
@@ -163,8 +163,7 @@ local function apply()
   hl('MarkdownH2', { fg = palette.green, bold = true })
   hl('MarkdownCode', { fg = palette.green, bg = palette.bg_float })
 
-  -- render-markdown uses full-width heading backgrounds. Keep each level
-  -- bright-on-tinted for readable structure without loud colour blocks.
+  -- render-markdown uses full-width heading backgrounds.
   local heading_backgrounds = {
     palette.bg_blue,
     palette.bg_green,
@@ -190,8 +189,7 @@ local function apply()
     })
   end
 
-  -- Neogit's defaults assume a bundled colorscheme; keep its filled rows on
-  -- the same neutral/tinted surfaces as the rest of the editor.
+  -- Keep Neogit's filled rows consistent with the rest of the editor.
   hl('NeogitActiveItem', { fg = palette.fg_bright, bg = palette.bg_selection, bold = true })
   hl('NeogitDiffDelete', { fg = palette.red, bg = palette.bg_red })
   hl('NeogitDiffDeleteHighlight', { fg = palette.fg_bright, bg = palette.bg_red })
@@ -199,27 +197,27 @@ local function apply()
   hl('NeogitHunkHeader', { fg = palette.fg_bright, bg = palette.bg_selection, bold = true })
   hl('NeogitHunkMergeHeader', { fg = palette.fg_bright, bg = palette.bg_purple, bold = true })
 
-  -- Keep Neovim's terminal palette identical to Ghostty's theme.
-  vim.g.terminal_color_0 = '#0b0d10'
-  vim.g.terminal_color_1 = '#ff7b72'
-  vim.g.terminal_color_2 = '#7ee787'
-  vim.g.terminal_color_3 = '#e3b341'
-  vim.g.terminal_color_4 = '#58a6ff'
-  vim.g.terminal_color_5 = '#bc8cff'
-  vim.g.terminal_color_6 = '#56d4dd'
-  vim.g.terminal_color_7 = '#c9d1d9'
-  vim.g.terminal_color_8 = '#6e7681'
-  vim.g.terminal_color_9 = '#ffa198'
-  vim.g.terminal_color_10 = '#9be9a8'
-  vim.g.terminal_color_11 = '#f2cc60'
-  vim.g.terminal_color_12 = '#79c0ff'
-  vim.g.terminal_color_13 = '#d2a8ff'
-  vim.g.terminal_color_14 = '#76e3ea'
+  -- Match Ghostty's terminal palette.
+  vim.g.terminal_color_0 = '#000000'
+  vim.g.terminal_color_1 = '#00ff00'
+  vim.g.terminal_color_2 = '#00ff00'
+  vim.g.terminal_color_3 = '#7fff00'
+  vim.g.terminal_color_4 = '#00ff00'
+  vim.g.terminal_color_5 = '#39ff14'
+  vim.g.terminal_color_6 = '#00ff00'
+  vim.g.terminal_color_7 = '#ccffcc'
+  vim.g.terminal_color_8 = '#006600'
+  vim.g.terminal_color_9 = '#39ff14'
+  vim.g.terminal_color_10 = '#39ff14'
+  vim.g.terminal_color_11 = '#b6ff00'
+  vim.g.terminal_color_12 = '#39ff14'
+  vim.g.terminal_color_13 = '#7fff00'
+  vim.g.terminal_color_14 = '#b6ff00'
   vim.g.terminal_color_15 = '#ffffff'
 end
 
 vim.api.nvim_create_autocmd({ 'ColorScheme', 'VimEnter' }, {
-  group = vim.api.nvim_create_augroup('modern_dark_theme', { clear = true }),
+  group = vim.api.nvim_create_augroup('green_black_theme', { clear = true }),
   callback = apply,
 })
 
