@@ -1,0 +1,3 @@
+.omp/agent/auth.json
+.omp/agent/config.yml.lock
+.omp/agent/sessions/

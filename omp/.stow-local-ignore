@@ -1,0 +1,5 @@
+.gitignore
+.omp/agent/auth.json
+.omp/agent/config.yml.lock
+.omp/agent/sessions/
+.omp/agent/sessions/*
