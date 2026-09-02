@@ -1,8 +1,8 @@
 # High-contrast green on black.
 background = #000000
 foreground = #00ff00
-font-family = "VT323"
-font-size = 26
+font-family = "Fira Mono"
+font-size = 12
 background-opacity = 1.0
 minimum-contrast = 1.0
 
