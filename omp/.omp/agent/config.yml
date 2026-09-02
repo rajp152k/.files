@@ -8,5 +8,3 @@ theme:
 setupVersion: 2
 dev:
   autoqaConsent: granted
-extensions:
-  - /Users/REDACTED/.omp/agent/extensions/tmux-ready-popup.mjs

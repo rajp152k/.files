@@ -2,8 +2,8 @@
 
 This package tracks the durable, non-secret part of the OMP agent setup:
 
-- `.omp/agent/config.yml` — model, display, and extension registration settings.
-- `.omp/agent/extensions/tmux-ready-popup.mjs` — local tmux completion notification.
+- `.omp/agent/config.yml` — model and display preferences.
+- `.omp/agent/extensions/tmux-ready-popup.mjs` — a discovered local tmux completion notification.
 
 Do **not** version the rest of `~/.omp`. It is runtime state: credentials, SQLite databases, sessions, traces, logs, caches, browser profiles, locks, and generated artifacts. It is both private and disposable.
 
