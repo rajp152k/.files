@@ -30,6 +30,12 @@ local function gh(repo) return 'https://github.com/' .. repo end
 vim.pack.add { gh 'j-hui/fidget.nvim' }
 require('fidget').setup {}
 
+-- Use the thinnest available terminal frame for LSP information floats.
+-- Neovim 0.12's vim.lsp.buf.hover reads this global option directly.
+local popup_border = 'single'
+vim.o.winborder = popup_border
+vim.diagnostic.config { float = { border = popup_border } }
+
 --  This function gets run when an LSP attaches to a particular buffer.
 --    That is to say, every time a new file is opened that is associated with
 --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -114,7 +120,7 @@ local servers = {
       client.server_capabilities.documentRangeFormattingProvider = false
     end,
   },
-  -- rust_analyzer = {},
+  rust_analyzer = {},
   --
   -- Some languages (like typescript) have entire language plugins that can be useful:
   --    https://github.com/pmizio/typescript-tools.nvim
@@ -202,6 +208,7 @@ local ensure_installed = {
   'prettier',
   'prettierd',
   'typescript-language-server',
+  'rust-analyzer',
 }
 
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
