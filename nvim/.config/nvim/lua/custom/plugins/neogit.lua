@@ -5,7 +5,6 @@ end
 vim.pack.add {
   { src = gh 'NeogitOrg/neogit', version = vim.version.range '*' },
   gh 'nvim-lua/plenary.nvim',
-  gh 'MunifTanjim/nui.nvim',
   gh 'sindrets/diffview.nvim',
 }
 

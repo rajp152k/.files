@@ -184,27 +184,25 @@ local servers = {
 vim.pack.add {
   gh 'neovim/nvim-lspconfig',
   gh 'mason-org/mason.nvim',
-  gh 'mason-org/mason-lspconfig.nvim',
   gh 'WhoIsSethDaniel/mason-tool-installer.nvim',
 }
 
 -- Automatically install LSPs and related tools to stdpath for Neovim
 require('mason').setup {}
 
--- Ensure the servers and tools above are installed
---
--- To check the current status of installed tools and/or manually install
--- other tools, you can run
---    :Mason
---
--- You can press `g?` for help in this menu.
-local ensure_installed = vim.tbl_filter(function(tool) return tool ~= 'ts_ls' end, vim.tbl_keys(servers or {}))
-vim.list_extend(ensure_installed, {
+-- Ensure Mason package identifiers, not Neovim LSP configuration names.
+-- `lua_ls`, for example, is provided by Mason's `lua-language-server` package.
+local ensure_installed = {
+  'pyright',
+  'ruff',
   'eslint-lsp',
+  'marksman',
+  'stylua',
+  'lua-language-server',
   'prettier',
   'prettierd',
   'typescript-language-server',
-})
+}
 
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
