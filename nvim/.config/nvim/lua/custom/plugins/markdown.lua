@@ -2,6 +2,7 @@ local function gh(repo) return 'https://github.com/' .. repo end
 
 vim.pack.add {
   gh 'MeanderingProgrammer/render-markdown.nvim',
+  gh 'ice345/markdown-table-wrap.nvim',
   gh 'tadmccorkle/markdown.nvim',
   gh '3rd/image.nvim',
   gh '3rd/diagram.nvim',
@@ -19,12 +20,30 @@ require('render-markdown').setup {
     sign = false,
     language_icon = false,
   },
+  pipe_table = {
+    enabled = false,
+  },
   checkbox = {
     unchecked = { icon = '[ ] ' },
     checked = { icon = '[x] ' },
     custom = {
       todo = { raw = '[-]', rendered = '[-] ' },
     },
+  },
+}
+
+require('markdown-table-wrap').setup {
+  preview_mode = 'reader',
+  auto_preview = true,
+  render_all = true,
+  max_width_ratio = 0.95,
+  min_col_width = 8,
+  max_col_width = 40,
+  reader = {
+    auto_open = 'has_table',
+    wrap = true,
+    linebreak = true,
+    breakindent = true,
   },
 }
 
@@ -88,8 +107,8 @@ require('markdown').setup {
   on_attach = function(bufnr)
     local function map(mode, lhs, rhs, desc) vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc }) end
 
-    map('n', '<leader>mt', '<Cmd>RenderMarkdown buf_toggle<CR>', '[M]arkdown render [T]oggle')
-    map('n', '<leader>mp', '<Cmd>RenderMarkdown preview<CR>', '[M]arkdown render [P]review')
+    map('n', '<leader>mt', '<Cmd>MarkdownTableToggleReader<CR>', '[M]arkdown table reader [T]oggle')
+    map('n', '<leader>mp', '<Cmd>MarkdownTablePreview<CR>', '[M]arkdown table [P]review')
     map('n', '<leader>md', function() require('diagram').show_diagram_hover() end, '[M]arkdown [D]iagram preview')
     map('n', '<leader>mx', '<Cmd>MDTaskToggle<CR>', '[M]arkdown task toggle')
     map('x', '<leader>mx', ':MDTaskToggle<CR>', '[M]arkdown task toggle')
