@@ -6,6 +6,10 @@ font-size = 12
 background-opacity = 1.0
 minimum-contrast = 1.0
 
+# A static, square #00ff00 frame around the terminal viewport.
+custom-shader = shaders/green-border.glsl
+custom-shader-animation = false
+
 # Monochrome ANSI palette.
 palette = 0=#000000
 palette = 1=#00ff00
