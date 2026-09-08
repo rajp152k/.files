@@ -1,0 +1,19 @@
+#kanata mouseless
+alias kml="bash ~/.load/kanata.sh"
+
+#nvim
+alias nvim=$HOME/source/tools/nvim/nvim-macos-arm64/bin/nvim
+alias vi='nvim'
+
+alias spi='cd $HOME/source/scratch/pi && pi'
+
+alias lt='ls -lthU'
+
+alias cid='caffeinate -id'
+
+#blog
+alias write='cd $HOME/source/blog/yetanotherraj && ./write.sh'
+alias publish='cd $HOME/source/blog/yetanotherraj && ./publish.sh'
+
+# rust
+alias cr='cargo run --'

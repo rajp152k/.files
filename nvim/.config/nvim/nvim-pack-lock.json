@@ -46,6 +46,10 @@
       "rev": "88351f1f7d9dbae286e671ce3690a49660dd8a5c",
       "src": "https://github.com/3rd/image.nvim"
     },
+    "iron.nvim": {
+      "rev": "1ad44e4e82ad31b7df1cdb7f154c707bfd0d303c",
+      "src": "https://github.com/Vigemus/iron.nvim"
+    },
     "markdown-table-wrap.nvim": {
       "rev": "a7117b5471787746290f0eddba032d50bdb86d94",
       "src": "https://github.com/ice345/markdown-table-wrap.nvim"

@@ -1,0 +1,9 @@
+## .local
+export PATH=$PATH:$HOME/.local/bin
+
+## Go
+export GOPATH="$HOME/go"
+export PATH="/opt/homebrew/bin:$GOPATH/bin:$PATH"
+
+## tex
+export PATH="/Library/TeX/texbin:$PATH"
