@@ -1,5 +1,5 @@
 modelRoles:
-  default: openai-codex/gpt-6-astra
+  default: openai-codex/gpt-5.6-terra:high
 symbolPreset: unicode
 composer:
   shape: rule
