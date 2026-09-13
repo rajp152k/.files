@@ -20,3 +20,7 @@ alias cr='cargo run --'
 
 #git 
 alias gcls='git clone --depth 1 --single-branch --filter=blob:none'
+
+#C
+alias c17='clang --std=c17'
+alias c23='clang --std=c23'
