@@ -1,6 +1,7 @@
 modelRoles:
   default: openai-codex/gpt-5.6-terra:high
 symbolPreset: unicode
+personality: pragmatic
 composer:
   shape: rule
 theme:
