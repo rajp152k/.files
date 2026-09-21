@@ -20,6 +20,7 @@ alias cr='cargo run --'
 
 #git 
 alias gcls='git clone --depth 1 --single-branch --filter=blob:none'
+alias nvd='git difftool -y -t nvimdiff'
 
 #C
 alias c17='clang --std=c17'
