@@ -26,10 +26,6 @@ local function gh(repo) return 'https://github.com/' .. repo end
 -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
 -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
--- Useful status updates for LSP.
-vim.pack.add { gh 'j-hui/fidget.nvim' }
-require('fidget').setup {}
-
 -- Use the thinnest available terminal frame for LSP information floats.
 -- Neovim 0.12's vim.lsp.buf.hover reads this global option directly.
 local popup_border = 'single'
@@ -104,13 +100,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+-- Keep all supported languages available for code exploration.
+-- The matching Mason packages are listed below; Dart ships with Flutter.
 --  See `:help lsp-config` for information about keys and how to configure
 ---@type table<string, vim.lsp.Config>
 local servers = {
   clangd = {},
-  -- gopls = {},
+  gopls = {},
+  jdtls = {},
+  dartls = {},
   pyright = {},
   ruff = {
     on_attach = function(client)
@@ -128,7 +126,7 @@ local servers = {
   -- But for many setups, the LSP (`ts_ls`) will work just fine
   ts_ls = {
     on_attach = function(client)
-      -- Prefer conform.nvim/prettier for JS/TS formatting.
+      -- Code is read-only here; do not offer a formatter in place of navigation.
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
     end,
@@ -140,7 +138,7 @@ local servers = {
 
   eslint = {
     on_attach = function(client)
-      -- Prefer conform.nvim/prettier for JS/TS formatting; keep ESLint for diagnostics and code actions.
+      -- Keep ESLint for diagnostics and actions, not formatting.
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
     end,
@@ -150,13 +148,10 @@ local servers = {
   },
 
   marksman = {},
-  stylua = {}, -- Used to format Lua code
 
   -- Special Lua Config, as recommended by neovim help docs
   lua_ls = {
     on_init = function(client)
-      client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
-
       if client.workspace_folders then
         local path = client.workspace_folders[1].name
         if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
@@ -178,12 +173,6 @@ local servers = {
         },
       })
     end,
-    ---@type lspconfig.settings.lua_ls
-    settings = {
-      Lua = {
-        format = { enable = false }, -- Disable formatting (formatting is done by stylua)
-      },
-    },
   },
 }
 
@@ -193,20 +182,20 @@ vim.pack.add {
   gh 'WhoIsSethDaniel/mason-tool-installer.nvim',
 }
 
--- Automatically install LSPs and related tools to stdpath for Neovim
+-- Mason manages portable servers; the Flutter SDK supplies dartls.
 require('mason').setup {}
 
--- Ensure Mason package identifiers, not Neovim LSP configuration names.
--- `lua_ls`, for example, is provided by Mason's `lua-language-server` package.
+-- Use Mason package identifiers, which differ from some Neovim config names
+-- (e.g. lua_ls -> lua-language-server, ts_ls -> typescript-language-server).
 local ensure_installed = {
+  'clangd',
+  'gopls',
+  'jdtls',
   'pyright',
   'ruff',
   'eslint-lsp',
   'marksman',
-  'stylua',
   'lua-language-server',
-  'prettier',
-  'prettierd',
   'typescript-language-server',
   'rust-analyzer',
 }

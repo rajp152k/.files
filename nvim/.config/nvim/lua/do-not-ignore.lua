@@ -1,0 +1,42 @@
+-- Neovim maintenance contract for future agents. Read this before editing the config.
+-- This module is intentionally comments only; AGENTS.md points here for discovery.
+--
+-- This is stowed from ~/.files/nvim/.config/nvim into ~/.config/nvim.
+-- Edit the versioned source, not a separate copy in the home directory.
+-- The user's primary work is editing Markdown, reading unfamiliar codebases,
+-- asking OMP through Agentic's ACP UI, and using Neogit. Preserve those paths.
+-- Keep render-markdown, Markdown tables/images/diagrams, Agentic, Neogit and
+-- its Diffview integration. Gitsigns is for read-only hunk navigation/blame;
+-- staging and reset belong in Neogit. Do not reintroduce a second Git workflow.
+--
+-- Navigation is deliberately shared across languages: Telescope handles file
+-- search (<Space>sf), project grep (<Space>sg), definitions (grd), references
+-- (grr), document symbols (gO), and workspace symbols (gW). Keep LSP mappings
+-- buffer-local on attach. [h and ]h are Git hunks; Markdown owns ]c for heading
+-- navigation. Avoid filetype-specific replacements for these shared keys.
+-- ~/nvim.ref.md is the user-facing binding reference; update it when keys move.
+--
+-- Keep language servers for Java, Go, Dart/Flutter, C/C++, Python, Rust,
+-- JavaScript/TypeScript, Lua and Markdown. Mason and mason-tool-installer stay:
+-- they provide a declarative, reproducible install path as more LSPs are added.
+-- Every Mason-managed LSP needs BOTH a server in the `servers` table and the
+-- corresponding package in `ensure_installed` in kickstart/plugins/lspconfig.lua;
+-- config names and Mason package names can differ. Do not use mason-lspconfig
+-- auto-enable on top of the explicit Neovim 0.12 vim.lsp.config/enable loop.
+-- Dart's dartls is the intentional exception: `dart language-server` ships
+-- with the Flutter/Dart SDK, so install Flutter rather than a Mason Dart copy.
+-- Check roots/commands in nvim-lspconfig/lsp/<server>.lua when adding a server.
+-- Use :MasonToolsInstallSync to provision managed binaries and
+-- :checkhealth vim.lsp to inspect attachment in a representative project.
+--
+-- This is a read-oriented config: no code snippets, completion UI, autoformat
+-- on save, or editing-only helpers by default. Markdown editing is preserved.
+-- Keep Treesitter syntax, Telescope/rg search, Which-key discovery and the
+-- statusline. Do not prune other language LSPs simply because this month's
+-- projects use Java, Go and Flutter; the user wants cross-language exploration.
+-- When removing plugins, remove their specs and mappings, obsolete theme/build
+-- hooks, and lockfile entries using vim.pack.del after restart.
+--
+-- Verify changes in real Neovim buffers (Markdown, a tracked Git file, and a
+-- sample language project) before claiming a navigation binding works.
+-- Avoid touching unrelated ~/.files packages or personal runtime state.
