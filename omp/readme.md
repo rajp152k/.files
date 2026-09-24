@@ -3,7 +3,9 @@
 This package tracks the durable, non-secret part of the OMP agent setup:
 
 - `.omp/agent/config.yml` — model and display preferences.
-- `.omp/agent/extensions/tmux-ready-popup.mjs` — a discovered local tmux completion notification.
+- `.omp/agent/extensions/tmux-ready-popup.js` — a discovered local tmux completion notification.
+- `.omp/agent/skills/peek/SKILL.md` — private, on-demand desktop inspection instructions.
+- `.omp/agent/commands/peek.md` — the direct `/peek` command, which loads that skill.
 
 Do **not** version the rest of `~/.omp`. It is runtime state: credentials, SQLite databases, sessions, traces, logs, caches, browser profiles, locks, and generated artifacts. It is both private and disposable.
 
@@ -13,17 +15,19 @@ The managed files must be linked into OMP's default config root (`omp config pat
 
 ```sh
 diff -u omp/.omp/agent/config.yml ~/.omp/agent/config.yml
-diff -u omp/.omp/agent/extensions/tmux-ready-popup.mjs \
-  ~/.omp/agent/extensions/tmux-ready-popup.mjs
+diff -u omp/.omp/agent/extensions/tmux-ready-popup.js \
+  ~/.omp/agent/extensions/tmux-ready-popup.js
 ```
 
-Then adopt only these tracked files and create the stow links:
+Then adopt any existing managed files and create the stow links:
 
 ```sh
 stow --adopt --restow omp
 ```
 
 `--adopt` makes the repository match any local changes to those files. Review the resulting diff before committing. On another machine, authenticate separately; authentication is intentionally not part of this package.
+
+Ask “what am I looking at?” in ordinary chat to activate the skill automatically, or use `/peek <question>` explicitly. It captures the main display by default and also supports a specified display, window, or rectangle.
 
 ## Updating settings
 
