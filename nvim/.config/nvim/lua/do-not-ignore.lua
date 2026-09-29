@@ -14,7 +14,7 @@
 -- (grr), document symbols (gO), and workspace symbols (gW). Keep LSP mappings
 -- buffer-local on attach. [h and ]h are Git hunks; Markdown owns ]c for heading
 -- navigation. Avoid filetype-specific replacements for these shared keys.
--- ~/nvim.ref.md is the user-facing binding reference; update it when keys move.
+-- ~/.files/guides/neovim-navigation.ref.md is the user-facing binding reference; update it when keys move.
 --
 -- Keep language servers for Java, Go, Dart/Flutter, C/C++, Python, Rust,
 -- JavaScript/TypeScript, Lua and Markdown. Mason and mason-tool-installer stay:
