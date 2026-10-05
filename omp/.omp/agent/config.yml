@@ -1,11 +1,137 @@
 modelRoles:
-  default: openai-codex/gpt-6-sol:high
-symbolPreset: unicode
+  default: openai-codex/gpt-6.1-sol:high
+symbolPreset: nerd
 personality: pragmatic
 composer:
-  shape: rule
+  shape: box
+  tokenRate: true
 theme:
   dark: dark-terminal
 setupVersion: 2
 dev:
   autoqaConsent: granted
+colorBlindMode: false
+statusLine:
+  separator: powerline-thin
+  contextLine: embedded
+  sessionAccent: true
+  transparent: true
+  compactThinkingLevel: true
+  showHookStatus: true
+tui:
+  resizeScrollback: rebuild
+  textSizing: false
+  reactions: true
+  codexResetFireworks: true
+  titleState: true
+  titleSpinner: braille
+  hyperlinks: always
+  tight: true
+  vimMode: true
+  vimModeDisplay: icon
+terminal:
+  showProgress: true
+display:
+  shimmer: kitt
+  pinnedAgents: full
+  subagentLivePreview: true
+  smoothStreaming: true
+  hideToolActivity: false
+  showTokenUsage: true
+  showTurnTime: true
+  cacheMissMarker: true
+  collapseCompacted: true
+hideThinkingBlock: false
+proseOnlyThinking: false
+includeWorkspaceTree: false
+includeModelInPrompt: false
+retry:
+  waitForUsageReset: true
+  usageAwareFallback: true
+advisor:
+  enabled: true
+prewalk:
+  enabled: true
+steeringMode: all
+doubleEscapeAction: tree
+input:
+  bareExitOnEmptySession: true
+  bareSlashCommands: false
+treeFilterMode: default
+tools:
+  approvalMode: yolo
+error:
+  notify: "on"
+ask:
+  timeout: 120
+  notify: "on"
+stt:
+  enabled: true
+  submitTrigger: say-submit
+power:
+  sleepPrevention: system
+features:
+  unexpectedStopDetection: smart
+git:
+  enabled: true
+contextPromotion:
+  enabled: false
+extendedContext: false
+branchSummary:
+  enabled: true
+compaction:
+  experimentalContextManagement: true
+  midTurnEnabled: true
+  handoffSaveToDisk: false
+snapcompact:
+  systemPrompt: none
+memory:
+  backend: mnemopi
+autolearn:
+  enabled: true
+  autoContinue: true
+mnemopi:
+  bank: ~/source/jour/memnaught
+  scoping: per-project-tagged
+  autoRecall: true
+  polyphonicRecall: true
+  enhancedRecall: true
+  proactiveLinking: true
+edit:
+  mode: hashline
+readLineNumbers: true
+read:
+  renderMarkdown: true
+  toolResultPreview: true
+bash:
+  allowCompoundCommands: true
+  direnv: auto
+shellMinimizer:
+  enabled: true
+  sourceOutlineLevel: aggressive
+eval:
+  py: true
+  autoBackground:
+    enabled: true
+python:
+  kernelMode: session
+astGrep:
+  enabled: true
+github:
+  enabled: true
+security:
+  enabled: true
+todo:
+  eager: default
+task:
+  enableEffort: false
+  maxConcurrency: 64
+  maxRecursionDepth: 3
+  maxRuntimeMs: 0
+providers:
+  openai-codex:
+    codeMode: "on"
+live:
+  voice: arbor
+tts:
+  localVoice: af_heart
