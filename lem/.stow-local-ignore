@@ -1,0 +1,4 @@
+^/readme\.md$
+^/\.gitignore$
+^/\.stow-local-ignore$
+^/\.config/lem/local\.lisp$

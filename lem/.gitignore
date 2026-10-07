@@ -1,0 +1,7 @@
+*
+!/.gitignore
+!/.stow-local-ignore
+!/readme.md
+!/.config/
+!/.config/lem/
+!/.config/lem/init.lisp
