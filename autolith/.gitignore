@@ -1,0 +1,9 @@
+/.config/autolith/*
+!/.config/autolith/init.lisp
+!/.config/autolith/mcp.sexp
+!/.config/autolith/lsp.sexp
+!/.config/autolith/agents/
+!/.config/autolith/skills/
+!/.config/autolith/extensions/
+/.config/autolith/**/.DS_Store
+/.config/autolith/**/*.fasl

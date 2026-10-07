@@ -1,0 +1,6 @@
+^/readme\.md$
+^/\.gitignore$
+^/\.stow-local-ignore$
+^/\.config/autolith/local\.lisp$
+^/\.config/autolith/.*\.fasl$
+^/\.config/autolith/.*\.DS_Store$
