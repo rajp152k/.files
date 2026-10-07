@@ -20,6 +20,23 @@ compare it with the repository copy before moving it aside or adopting it.
 Start a new Autolith process to load the configuration. This package was tested
 with Autolith 0.58.0. The selected model requires an available provider.
 
+## Operational log skill
+
+The `ops-log` skill adapts the OMP skill for raj's blog. It covers requested logs,
+STE prose, local review, and separate approval for commit and publication.
+
+Autolith rejects skill symlinks that resolve outside its skill root. Stow excludes
+`skills/`. From `~/.files`, install the tracked skill as a regular file:
+
+```sh
+install -d "$HOME/.config/autolith/skills/ops-log"
+install -m 644 autolith/.config/autolith/skills/ops-log/SKILL.md \
+  "$HOME/.config/autolith/skills/ops-log/SKILL.md"
+```
+
+After each skill edit, repeat the install command. Use `/skills` to check discovery.
+Autolith refreshes the skill catalog on the next model request; no restart is needed.
+
 ## Change settings
 
 Edit `.config/autolith/init.lisp` and start a new process. Changes through

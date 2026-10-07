@@ -4,3 +4,4 @@
 ^/\.config/autolith/local\.lisp$
 ^/\.config/autolith/.*\.fasl$
 ^/\.config/autolith/.*\.DS_Store$
+^/\.config/autolith/skills$
