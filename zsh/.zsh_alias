@@ -25,3 +25,13 @@ alias nvd='git difftool -y -t nvimdiff'
 #C
 alias c17='clang --std=c17'
 alias c23='clang --std=c23'
+
+#autolith
+alias a='autolith'
+alias als='autolith localgroup status'
+alias alp='autolith localgroup pause'
+alias ala='autolith localgroup attach'
+alias ald='autolith localgroup detach'
+alias alk='autolith localgroup kill'
+alias alt='autolith localgroup tell'
+
