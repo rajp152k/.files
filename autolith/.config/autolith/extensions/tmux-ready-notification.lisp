@@ -38,14 +38,15 @@
       (declare (ignore output error-output))
       (eql exit-code 0))))
 
-(defun tmux-ready-notification--send ()
+(defun tmux-ready-notification--send (application)
   (let ((pane (sb-ext:posix-getenv "TMUX_PANE")))
     (when (and (sb-ext:posix-getenv "TMUX") pane)
-      (let* ((location (tmux-ready-notification--location pane))
+      (let* ((identifier
+               (conversation-identifier (application-conversation application)))
+             (location (tmux-ready-notification--location pane))
              (message (tmux-ready-notification--sanitize
-                       (if location
-                           (format nil "Ready for input - ~A" location)
-                           "Ready for input"))))
+                       (format nil "Ready for input - Session ~A~@[ - ~A~]"
+                               identifier location))))
         (tmux-ready-notification--show pane message)))))
 
 (defun tmux-ready-notification-install ()
@@ -58,7 +59,7 @@
                 (unless (or (getf arguments :continuation-p)
                             (getf arguments :operation-request))
                   (handler-case
-                      (tmux-ready-notification--send)
+                      (tmux-ready-notification--send application)
                     (serious-condition () nil))))))
       (setf *tmux-ready-notification-installed-p* t)))
   nil)
