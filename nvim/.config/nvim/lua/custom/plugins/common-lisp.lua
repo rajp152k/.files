@@ -121,14 +121,71 @@ vim.api.nvim_create_user_command('LispConsole', function()
 end, {})
 
 local paredit = require 'nvim-paredit'
+local mini_pairs = require 'mini.pairs'
+
+-- Keep pair insertion limited to Lisp buffers. MiniPairs also gives these
+-- buffers paired backspace, close-paren skipping, and newline expansion.
+mini_pairs.setup {
+  mappings = {
+    ['('] = false,
+    [')'] = false,
+    ['['] = false,
+    [']'] = false,
+    ['{'] = false,
+    ['}'] = false,
+    ['"'] = false,
+    ["'"] = false,
+    ['`'] = false,
+  },
+}
+
+local ts_context = require 'nvim-paredit.treesitter.context'
+local ts_forms = require 'nvim-paredit.treesitter.forms'
+
+local function cursor_on_form_edge(edge_name)
+  local context = ts_context.create_context()
+  if not context then return false end
+
+  local form = ts_forms.find_nearest_form(context.node, context)
+  if not form then return false end
+
+  local edge = ts_forms.get_form_edges(form, context)[edge_name]
+  local row, col
+  if edge_name == 'left' then
+    if edge.text:sub(-1) ~= '(' then return false end
+    row, col = edge.range[3], edge.range[4] - 1
+  else
+    if edge.text ~= ')' then return false end
+    row, col = edge.range[1], edge.range[2]
+  end
+
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  return cursor[1] - 1 == row and cursor[2] == col
+end
+
+local function smart_backward()
+  if cursor_on_form_edge 'left' then
+    paredit.api.slurp_backwards()
+  else
+    paredit.api.barf_backwards()
+  end
+end
+
+local function smart_forward()
+  if cursor_on_form_edge 'right' then
+    paredit.api.slurp_forwards()
+  else
+    paredit.api.barf_forwards()
+  end
+end
+
 paredit.setup {
   filetypes = { 'lisp' },
   use_default_keys = false,
+  indent = { enabled = true },
   keys = {
-    ['>)'] = { paredit.api.slurp_forwards, 'Slurp forward' },
-    ['<('] = { paredit.api.slurp_backwards, 'Slurp backward' },
-    ['<)'] = { paredit.api.barf_forwards, 'Barf forward' },
-    ['>('] = { paredit.api.barf_backwards, 'Barf backward' },
+    ['<'] = { smart_backward, 'Slurp or barf backward' },
+    ['>'] = { smart_forward, 'Slurp or barf forward' },
     ['<Space>lp'] = { paredit.api.raise_form, 'Raise form' },
     ['af'] = { paredit.api.select_around_form, 'Around form', mode = { 'o', 'v' }, repeatable = false },
     ['if'] = { paredit.api.select_in_form, 'Inside form', mode = { 'o', 'v' }, repeatable = false },
@@ -141,6 +198,16 @@ vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('CommonLispDevelopment', { clear = true }),
   pattern = 'lisp',
   callback = function(event)
+    mini_pairs.map_buf(event.buf, 'i', '(', { action = 'open', pair = '()' })
+    mini_pairs.map_buf(event.buf, 'i', ')', { action = 'close', pair = '()' })
+    mini_pairs.map_buf(event.buf, 'i', '"', {
+      action = 'closeopen',
+      pair = '""',
+      neigh_pattern = '^[^\\]',
+      register = { cr = false },
+    })
+    vim.opt_local.matchpairs = '(:)'
+    vim.opt_local.showmatch = true
     vim.bo[event.buf].omnifunc = 'vlime#plugin#CompleteFunc'
     -- Lisp-aware macro indentation, without formatting on save.
     vim.bo[event.buf].indentexpr = 'vlime#plugin#CalcCurIndent()'

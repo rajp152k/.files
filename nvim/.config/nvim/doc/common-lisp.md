@@ -55,9 +55,15 @@ package from the buffer's `in-package` form.
 
 ## Structural editing
 
-Use `>)` / `<(` to slurp forward/backward and `<)` / `>(` to barf forward/backward.
-Use `af` / `if` for the enclosing form and `aF` / `iF` for the top-level form.
-These are Lisp-buffer mappings. Ordinary word motions are unchanged.
+Use `<` or `>` for one-key slurp/barf. Press `<` on the opening parenthesis to
+slurp backward; press it inside the form to barf backward. Press `>` on the
+closing parenthesis to slurp forward; press it inside the form to barf forward.
+Paredit reindents after these edits. Use `af` / `if` for the enclosing form and
+`aF` / `iF` for the top-level form.
+
+In Lisp buffers, `(` inserts `()` and `)` skips an existing close. Backspace
+deletes an empty pair, and Enter opens it onto separate lines. Double quotes
+pair strings. Matching parentheses highlight automatically.
 
 ## Debugger and inspector
 
