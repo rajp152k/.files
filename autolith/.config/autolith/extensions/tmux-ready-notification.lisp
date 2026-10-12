@@ -42,7 +42,8 @@
   (let ((pane (sb-ext:posix-getenv "TMUX_PANE")))
     (when (and (sb-ext:posix-getenv "TMUX") pane)
       (let* ((identifier
-               (conversation-identifier (application-conversation application)))
+               (image-daemon:session-identifier-display
+                (conversation-identifier (application-conversation application))))
              (location (tmux-ready-notification--location pane))
              (message (tmux-ready-notification--sanitize
                        (format nil "Ready for input - Session ~A~@[ - ~A~]"
