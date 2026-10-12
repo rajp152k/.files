@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "daemon": {
+    "listen": "127.0.0.1:6767",
+    "cors": {
+      "allowedOrigins": [
+        "https://app.paseo.sh"
+      ]
+    },
+    "relay": {
+      "enabled": true
+    }
+  },
+  "app": {
+    "baseUrl": "https://app.paseo.sh"
+  },
+  "agents": {
+    "providers": {
+      "omp": {
+        "enabled": true
+      },
+      "claude": {
+        "enabled": false
+      },
+      "codex": {
+        "enabled": false
+      },
+      "copilot": {
+        "enabled": false
+      },
+      "opencode": {
+        "enabled": false
+      },
+      "autolith": {
+        "extends": "acp",
+        "label": "Autolith",
+        "command": [
+          "/Users/nilenso/.local/bin/autolith",
+          "acp"
+        ]
+      }
+    }
+  },
+  "features": {
+    "dictation": {
+      "enabled": true
+    },
+    "voiceMode": {
+      "enabled": true
+    }
+  }
+}
