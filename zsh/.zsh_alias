@@ -1,6 +1,9 @@
 #kanata mouseless
 alias kml="bash ~/.load/kanata.sh"
 
+#watch
+alias wn1="watch -n 1"
+
 #nvim
 alias nvim=$HOME/source/tools/nvim/nvim-macos-arm64/bin/nvim
 alias vi='nvim'
@@ -34,4 +37,4 @@ alias ala='autolith localgroup attach'
 alias ald='autolith localgroup detach'
 alias alk='autolith localgroup kill'
 alias alt='autolith localgroup tell'
-
+alias ae='cd ~/.config/autolith && autolith'
