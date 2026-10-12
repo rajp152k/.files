@@ -10,3 +10,6 @@
 (let ((local-init (merge-pathnames "local.lisp" *load-pathname*)))
   (when (probe-file local-init)
     (load local-init)))
+
+(load (merge-pathnames "extensions/tmux-ready-notification.lisp"
+                       *load-pathname*))
