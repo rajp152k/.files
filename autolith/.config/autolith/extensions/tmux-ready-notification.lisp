@@ -25,13 +25,13 @@
       (let ((location (tmux-ready-notification--sanitize output)))
         (unless (zerop (length location)) location)))))
 
-(defun tmux-ready-notification--show (pane message)
+(defun tmux-ready-notification--show (pane title message)
   (let ((command
           "printf '%s\\n\\nPress any key to dismiss.' \"$AUTOLITH_TMUX_READY_MESSAGE\"; old_stty=$(stty -g); trap 'stty \"$old_stty\"' EXIT HUP INT TERM; stty -icanon -echo min 1 time 0; dd bs=1 count=1 >/dev/null 2>&1;"))
     (multiple-value-bind (output error-output exit-code)
         (uiop:run-program
          (list "tmux" "display-popup" "-t" pane "-E" "-w" "50" "-h" "5"
-               "-x" "R" "-y" "0" "-T" "Autolith"
+               "-x" "R" "-y" "0" "-T" title
                "-e" (concatenate 'string "AUTOLITH_TMUX_READY_MESSAGE=" message)
                command)
          :output nil :error-output nil :ignore-error-status t)
@@ -45,10 +45,12 @@
                (image-daemon:session-identifier-display
                 (conversation-identifier (application-conversation application))))
              (location (tmux-ready-notification--location pane))
+             (title (tmux-ready-notification--sanitize
+                     (format nil "Autolith ~A" identifier)))
              (message (tmux-ready-notification--sanitize
-                       (format nil "Ready for input - Session ~A~@[ - ~A~]"
+                       (format nil "Ready for input - Localgroup ID: ~A~@[ - ~A~]"
                                identifier location))))
-        (tmux-ready-notification--show pane message)))))
+        (tmux-ready-notification--show pane title message)))))
 
 (defun tmux-ready-notification-install ()
   "Show the OMP-style tmux popup after each completed top-level user turn."
