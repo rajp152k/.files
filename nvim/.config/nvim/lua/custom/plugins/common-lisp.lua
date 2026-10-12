@@ -142,50 +142,65 @@ mini_pairs.setup {
 local ts_context = require 'nvim-paredit.treesitter.context'
 local ts_forms = require 'nvim-paredit.treesitter.forms'
 
-local function cursor_on_form_edge(edge_name)
+local function form_edge_at_cursor()
   local context = ts_context.create_context()
-  if not context then return false end
+  if not context then return end
 
   local form = ts_forms.find_nearest_form(context.node, context)
-  if not form then return false end
+  if not form then return end
 
-  local edge = ts_forms.get_form_edges(form, context)[edge_name]
-  local row, col
-  if edge_name == 'left' then
-    if edge.text:sub(-1) ~= '(' then return false end
-    row, col = edge.range[3], edge.range[4] - 1
-  else
-    if edge.text ~= ')' then return false end
-    row, col = edge.range[1], edge.range[2]
-  end
-
+  local edges = ts_forms.get_form_edges(form, context)
   local cursor = vim.api.nvim_win_get_cursor(0)
-  return cursor[1] - 1 == row and cursor[2] == col
-end
-
-local function smart_backward()
-  if cursor_on_form_edge 'left' then
-    paredit.api.slurp_backwards()
-  else
-    paredit.api.barf_backwards()
+  for _, name in ipairs { 'left', 'right' } do
+    local edge = edges[name]
+    local row, col
+    if name == 'left' and edge.text:sub(-1) == '(' then
+      row, col = edge.range[3], edge.range[4] - 1
+    elseif name == 'right' and edge.text == ')' then
+      row, col = edge.range[1], edge.range[2]
+    end
+    if row and cursor[1] - 1 == row and cursor[2] == col then return name end
   end
 end
 
-local function smart_forward()
-  if cursor_on_form_edge 'right' then
-    paredit.api.slurp_forwards()
-  else
-    paredit.api.barf_forwards()
+local function barf_backwards_and_follow()
+  paredit.api.barf_backwards()
+
+  -- Paredit leaves the cursor one column after the moved opener here.
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local line = vim.api.nvim_get_current_line()
+  if cursor[2] > 0
+      and line:sub(cursor[2] + 1, cursor[2] + 1) ~= '('
+      and line:sub(cursor[2], cursor[2]) == '(' then
+    vim.api.nvim_win_set_cursor(0, { cursor[1], cursor[2] - 1 })
+  end
+end
+
+local function move_boundary(direction)
+  local edge = form_edge_at_cursor()
+  if edge == 'left' then
+    if direction == 'left' then
+      paredit.api.slurp_backwards()
+    else
+      barf_backwards_and_follow()
+    end
+  elseif edge == 'right' then
+    if direction == 'left' then
+      paredit.api.barf_forwards()
+    else
+      paredit.api.slurp_forwards()
+    end
   end
 end
 
 paredit.setup {
   filetypes = { 'lisp' },
   use_default_keys = false,
+  cursor_behaviour = 'follow',
   indent = { enabled = true },
   keys = {
-    ['<'] = { smart_backward, 'Slurp or barf backward' },
-    ['>'] = { smart_forward, 'Slurp or barf forward' },
+    ['<'] = { function() move_boundary 'left' end, 'Move parenthesis left' },
+    ['>'] = { function() move_boundary 'right' end, 'Move parenthesis right' },
     ['<Space>lp'] = { paredit.api.raise_form, 'Raise form' },
     ['af'] = { paredit.api.select_around_form, 'Around form', mode = { 'o', 'v' }, repeatable = false },
     ['if'] = { paredit.api.select_in_form, 'Inside form', mode = { 'o', 'v' }, repeatable = false },
