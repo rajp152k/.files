@@ -4,7 +4,7 @@
 -- This is stowed from ~/.files/nvim/.config/nvim into ~/.config/nvim.
 -- Edit the versioned source, not a separate copy in the home directory.
 -- The user's primary work is editing Markdown, reading unfamiliar codebases,
--- asking OMP through Agentic's ACP UI, and using Neogit. Preserve those paths.
+-- asking Autolith through Agentic's ACP UI, and using Neogit. Preserve those paths.
 -- Keep render-markdown, Markdown tables/images/diagrams, Agentic, Neogit and
 -- its Diffview integration. Gitsigns is for read-only hunk navigation/blame;
 -- staging and reset belong in Neogit. Do not reintroduce a second Git workflow.
