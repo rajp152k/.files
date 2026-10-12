@@ -44,6 +44,17 @@ accepts `stop`, `status`, and `console` in place of `start`.
 | `<Space>lx` | Find callers through Swank |
 | `<Space>lg` | Find definition through Swank |
 | `<Space>lp` | Raise form |
+| `<Space>lV` / `<Space>lu` | Raise element / unwrap form |
+| `<Space>l]` / `<Space>l[` | Drag element forward / backward |
+| `]e` / `[e` | Move to next / previous element |
+| `<Space>lM` | Recursively macroexpand form |
+| `<Space>lI` | Inspect entered expression |
+| `<Space>lT` / `<Space>lD` | Toggle trace / open trace dialog |
+| `<Space>lX` | Find callees |
+| `<Space>lR` | Find references |
+| `<Space>lB` / `<Space>lS` | Find bindings / assignments |
+| `<Space>lE` / `<Space>lC` | Find macro callers / specialized methods |
+| `<Space>ly` | Choose a cross-reference query |
 | `<C-x><C-o>` in insert mode | Manual image-based completion |
 
 Use existing `grd` and `grr` Telescope bindings for LSP definitions and references;
@@ -59,7 +70,10 @@ Use `<` to move the parenthesis under the cursor left. Use `>` to move it right.
 On `(`, `<` slurps backward and `>` barfs backward. On `)`, `<` barfs
 forward and `>` slurps forward. The cursor follows the moved parenthesis.
 Paredit reindents after each edit. Use `af` / `if` for the enclosing form and
-`aF` / `iF` for the top-level form.
+`aF` / `iF` for the top-level form. Use `]e` and `[e` to move between
+elements. Use `<Space>l]` and `<Space>l[` to drag an element across its
+neighbors. Use `<Space>lu` to remove the enclosing pair, or `<Space>lV` to raise
+the element.
 
 In Lisp buffers, `(` inserts `()` and `)` skips an existing close. Backspace
 deletes an empty pair, and Enter opens it onto separate lines. Double quotes

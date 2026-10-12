@@ -202,6 +202,12 @@ paredit.setup {
     ['<'] = { function() move_boundary 'left' end, 'Move parenthesis left' },
     ['>'] = { function() move_boundary 'right' end, 'Move parenthesis right' },
     ['<Space>lp'] = { paredit.api.raise_form, 'Raise form' },
+    ['<Space>lV'] = { paredit.api.raise_element, 'Raise element' },
+    ['<Space>lu'] = { paredit.api.unwrap_form_under_cursor, 'Unwrap form' },
+    ['<Space>l]'] = { paredit.api.drag_element_forwards, 'Drag element forward' },
+    ['<Space>l['] = { paredit.api.drag_element_backwards, 'Drag element backward' },
+    [']e'] = { paredit.api.move_to_next_element_head, 'Next element' },
+    ['[e'] = { paredit.api.move_to_prev_element_head, 'Previous element' },
     ['af'] = { paredit.api.select_around_form, 'Around form', mode = { 'o', 'v' }, repeatable = false },
     ['if'] = { paredit.api.select_in_form, 'Inside form', mode = { 'o', 'v' }, repeatable = false },
     ['aF'] = { paredit.api.select_around_top_level_form, 'Around top-level form', mode = { 'o', 'v' }, repeatable = false },
@@ -247,9 +253,20 @@ vim.api.nvim_create_autocmd('FileType', {
     end, 'save, compile and load file')
     map('<Space>li', call('Inspect', 'vlime#ui#CurExprOrAtom()'), 'inspect form')
     map('<Space>lm', call('ExpandMacro', 'vlime#ui#CurExpr(), "one"'), 'macroexpand once')
+    map('<Space>lM', call('ExpandMacro', 'vlime#ui#CurExpr(), "all"'), 'macroexpand all')
     map('<Space>ld', call('DescribeSymbol', 'vlime#ui#CurAtom()'), 'describe symbol')
+    map('<Space>lI', call('Inspect'), 'inspect entered expression')
+    map('<Space>lT', call('DialogToggleTrace', 'vlime#ui#CurAtom()'), 'toggle trace')
+    map('<Space>lD', call('OpenTraceDialog'), 'trace dialog')
     map('<Space>lh', vim.lsp.buf.signature_help, 'function arguments')
     map('<Space>lx', call('XRefSymbol', '"CALLS", vlime#ui#CurAtom()'), 'callers')
+    map('<Space>lX', call('XRefSymbol', '"CALLS-WHO", vlime#ui#CurAtom()'), 'callees')
+    map('<Space>lR', call('XRefSymbol', '"REFERENCES", vlime#ui#CurAtom()'), 'references')
+    map('<Space>lB', call('XRefSymbol', '"BINDS", vlime#ui#CurAtom()'), 'bindings')
+    map('<Space>lS', call('XRefSymbol', '"SETS", vlime#ui#CurAtom()'), 'sets')
+    map('<Space>lE', call('XRefSymbol', '"MACROEXPANDS", vlime#ui#CurAtom()'), 'macro callers')
+    map('<Space>lC', call('XRefSymbol', '"SPECIALIZES", vlime#ui#CurAtom()'), 'specialized methods')
+    map('<Space>ly', call('XRefSymbolWrapper'), 'choose cross-reference query')
     map('<Space>lg', call('FindDefinition', 'vlime#ui#CurAtom()'), 'Swank definition fallback')
     map('<Space>la', call('SendToREPL'), 'evaluate input / load ASDF system')
     if port(M.root(event.buf), 'vlime') then M.connect(event.buf) end
