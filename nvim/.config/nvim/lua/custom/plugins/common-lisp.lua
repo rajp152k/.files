@@ -1,4 +1,6 @@
 -- Common Lisp: Vlime and native LSP share one persistent, project-local SBCL.
+vim.filetype.add { extension = { ln = 'lisp' } }
+
 vim.pack.add {
   { src = 'https://github.com/vlime/vlime', version = 'e276e9a6f37d2699a3caa63be19314f5a19a1481' },
   { src = 'https://github.com/ramfjord/swank-lsp', version = '20b04439b2ecd82c33d1b65f3a43c3a27b906c62' },
