@@ -1,30 +1,30 @@
--- High-contrast green on black.
+-- Bit-Mage: green text on black, with violet selection and distinct semantic colors.
 
 local palette = {
   bg = '#000000',
   bg_dark = '#000000',
   bg_float = '#000000',
   bg_highlight = '#002b00',
-  bg_selection = '#00b300',
-  bg_yellow = '#003b00',
-  bg_orange = '#004d00',
+  bg_selection = '#2a0040',
+  bg_yellow = '#3b2e00',
+  bg_orange = '#4d2d00',
   bg_green = '#003b00',
-  bg_blue = '#002b00',
-  bg_purple = '#004000',
-  bg_red = '#005200',
+  bg_blue = '#17152b',
+  bg_purple = '#2a0040',
+  bg_red = '#3b1010',
   fg = '#00ff00',
   fg_bright = '#ffffff',
   fg_dim = '#39ff14',
   green = '#00ff00',
   green_dark = '#006600',
-  blue = '#39ff14',
-  blue_dim = '#00b300',
-  purple = '#7fff00',
-  cyan = '#b6ff00',
-  yellow = '#b6ff00',
-  orange = '#7fff00',
-  red = '#39ff14',
-  gray = '#00b300',
+  blue = '#7b68ee',
+  blue_dim = '#4b4268',
+  purple = '#bc8cff',
+  cyan = '#00ffff',
+  yellow = '#ffd700',
+  orange = '#ffaf00',
+  red = '#ff5f5f',
+  gray = '#808080',
   contrast = '#000000',
   white = '#ffffff',
 }
@@ -34,7 +34,7 @@ local function hl(group, opts)
 end
 
 local function apply()
-  vim.g.colors_name = 'green-black-high-contrast'
+  vim.g.colors_name = 'bit-mage'
 
   hl('Normal', { fg = palette.fg, bg = palette.bg })
   hl('NormalNC', { fg = palette.fg_dim, bg = palette.bg })
@@ -194,27 +194,27 @@ local function apply()
   hl('NeogitHunkHeader', { fg = palette.fg_bright, bg = palette.bg_selection, bold = true })
   hl('NeogitHunkMergeHeader', { fg = palette.fg_bright, bg = palette.bg_purple, bold = true })
 
-  -- Match Ghostty's terminal palette.
+  -- Keep terminal applications in Neovim aligned with Ghostty's Bit-Mage palette.
   vim.g.terminal_color_0 = '#000000'
-  vim.g.terminal_color_1 = '#00ff00'
-  vim.g.terminal_color_2 = '#00ff00'
-  vim.g.terminal_color_3 = '#7fff00'
-  vim.g.terminal_color_4 = '#00ff00'
-  vim.g.terminal_color_5 = '#39ff14'
-  vim.g.terminal_color_6 = '#00ff00'
-  vim.g.terminal_color_7 = '#ccffcc'
-  vim.g.terminal_color_8 = '#006600'
-  vim.g.terminal_color_9 = '#39ff14'
-  vim.g.terminal_color_10 = '#39ff14'
-  vim.g.terminal_color_11 = '#b6ff00'
-  vim.g.terminal_color_12 = '#39ff14'
-  vim.g.terminal_color_13 = '#7fff00'
-  vim.g.terminal_color_14 = '#b6ff00'
+  vim.g.terminal_color_1 = '#ff5f5f'
+  vim.g.terminal_color_2 = '#00ff7f'
+  vim.g.terminal_color_3 = '#ffaf00'
+  vim.g.terminal_color_4 = '#7b68ee'
+  vim.g.terminal_color_5 = '#bc8cff'
+  vim.g.terminal_color_6 = '#00ffff'
+  vim.g.terminal_color_7 = '#22dd22'
+  vim.g.terminal_color_8 = '#808080'
+  vim.g.terminal_color_9 = '#ff5f5f'
+  vim.g.terminal_color_10 = '#00ff00'
+  vim.g.terminal_color_11 = '#ffd700'
+  vim.g.terminal_color_12 = '#7b68ee'
+  vim.g.terminal_color_13 = '#d2a8ff'
+  vim.g.terminal_color_14 = '#00ffff'
   vim.g.terminal_color_15 = '#ffffff'
 end
 
 vim.api.nvim_create_autocmd({ 'ColorScheme', 'VimEnter' }, {
-  group = vim.api.nvim_create_augroup('green_black_theme', { clear = true }),
+    group = vim.api.nvim_create_augroup('bit_mage_theme', { clear = true }),
   callback = apply,
 })
 
