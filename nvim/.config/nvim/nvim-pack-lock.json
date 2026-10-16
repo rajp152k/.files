@@ -4,6 +4,11 @@
       "rev": "81628c1dc07edadd1c2c3c27d8dbcb424da1dea0",
       "src": "https://github.com/carlos-algms/agentic.nvim"
     },
+    "conjure": {
+      "rev": "b23c76a8c874fe7ac5ad95255efc66173b049088",
+      "src": "https://github.com/Olical/conjure",
+      "version": "'b23c76a8c874fe7ac5ad95255efc66173b049088'"
+    },
     "diagram.nvim": {
       "rev": "a221810b17cdda2d5fdddba9bab3eba6fab8fabc",
       "src": "https://github.com/3rd/diagram.nvim"

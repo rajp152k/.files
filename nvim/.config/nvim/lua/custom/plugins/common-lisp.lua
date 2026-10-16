@@ -196,7 +196,7 @@ local function move_boundary(direction)
 end
 
 paredit.setup {
-  filetypes = { 'lisp' },
+  filetypes = { 'lisp', 'clojure' },
   use_default_keys = false,
   cursor_behaviour = 'follow',
   indent = { enabled = true },
