@@ -9,7 +9,7 @@ require('agentic').setup {
     ['autolith-acp'] = {
       name = 'Autolith',
       command = 'autolith',
-      args = { 'acp' },
+      args = { '--permissions', 'full', 'acp' },
     },
   },
 }
