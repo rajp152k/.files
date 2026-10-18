@@ -194,6 +194,19 @@ local function apply()
   hl('NeogitHunkHeader', { fg = palette.fg_bright, bg = palette.bg_selection, bold = true })
   hl('NeogitHunkMergeHeader', { fg = palette.fg_bright, bg = palette.bg_purple, bold = true })
 
+  -- Agentic ACP panels: use the Bit-Mage green and violet palette, not the default blue title bar.
+  hl('AgenticTitle', { fg = palette.fg_bright, bg = palette.bg_green, bold = true })
+  hl('AgenticCodeBlockFence', { fg = palette.green })
+  hl('AgenticStatusPending', { fg = palette.purple, bg = palette.bg_purple })
+  hl('AgenticStatusCompleted', { fg = palette.green, bg = palette.bg_green })
+  hl('AgenticStatusFailed', { fg = palette.red, bg = palette.bg_red })
+  hl('AgenticPermissionButtonAllow', { fg = palette.fg_bright, bg = palette.bg_green, bold = true })
+  hl('AgenticPermissionButtonReject', { fg = palette.fg_bright, bg = palette.bg_red, bold = true })
+  hl('AgenticPermissionButtonInactive', { fg = palette.fg_dim, bg = palette.bg_float })
+  hl('AgenticDiffAddWord', { fg = palette.fg_bright, bg = palette.bg_green, bold = true })
+  hl('AgenticDiffDeleteWord', { fg = palette.fg_bright, bg = palette.bg_red, bold = true })
+  hl('AgenticThinking', { fg = palette.fg_dim, italic = true })
+
   -- Keep terminal applications in Neovim aligned with Ghostty's Bit-Mage palette.
   vim.g.terminal_color_0 = '#000000'
   vim.g.terminal_color_1 = '#ff5f5f'
