@@ -26,17 +26,23 @@
         (unless (zerop (length location)) location)))))
 
 (defun tmux-ready-notification--show (pane title message)
-  (let ((command
-          "printf '%s\\n\\nPress any key to dismiss.' \"$AUTOLITH_TMUX_READY_MESSAGE\"; old_stty=$(stty -g); trap 'stty \"$old_stty\"' EXIT HUP INT TERM; stty -icanon -echo min 1 time 0; dd bs=1 count=1 >/dev/null 2>&1;"))
-    (multiple-value-bind (output error-output exit-code)
-        (uiop:run-program
-         (list "tmux" "display-popup" "-t" pane "-E" "-w" "50" "-h" "5"
-               "-x" "R" "-y" "0" "-T" title
-               "-e" (concatenate 'string "AUTOLITH_TMUX_READY_MESSAGE=" message)
-               command)
-         :output nil :error-output nil :ignore-error-status t)
-      (declare (ignore output error-output))
-      (eql exit-code 0))))
+  "Display the popup on a background thread without blocking turn completion."
+  (bordeaux-threads:make-thread
+   (lambda ()
+     (handler-case
+         (let ((command
+                 "printf '%s\\n\\nPress any key to dismiss.' \"$AUTOLITH_TMUX_READY_MESSAGE\"; old_stty=$(stty -g); trap 'stty \"$old_stty\"' EXIT HUP INT TERM; stty -icanon -echo min 1 time 0; dd bs=1 count=1 >/dev/null 2>&1;"))
+           (multiple-value-bind (output error-output exit-code)
+               (uiop:run-program
+                (list "tmux" "display-popup" "-t" pane "-E" "-w" "50" "-h" "5"
+                      "-x" "R" "-y" "0" "-T" title
+                      "-e" (concatenate 'string "AUTOLITH_TMUX_READY_MESSAGE=" message)
+                      command)
+                :output nil :error-output nil :ignore-error-status t)
+             (declare (ignore output error-output))
+             (eql exit-code 0)))
+       (serious-condition () nil)))
+   :name "Autolith tmux ready notification"))
 
 (defun tmux-ready-notification--send (application)
   (let ((pane (sb-ext:posix-getenv "TMUX_PANE")))
