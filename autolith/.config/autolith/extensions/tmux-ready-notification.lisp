@@ -52,6 +52,23 @@
                                identifier location))))
         (tmux-ready-notification--show pane title message)))))
 
+(defun ntfy-ready-notification--send (application)
+  (let* ((identifier
+           (image-daemon:session-identifier-display
+            (conversation-identifier (application-conversation application))))
+         (message
+           (tmux-ready-notification--sanitize
+            (format nil "Ready for input - Localgroup ID: ~A" identifier))))
+    (multiple-value-bind (output error-output exit-code)
+        (uiop:run-program
+         (list "curl" "--fail" "--silent" "--show-error" "--max-time" "5"
+               "--header" "Title: Autolith"
+               "--data-binary" message
+               "http://100.73.230.125:2586/driver")
+         :output nil :error-output nil :ignore-error-status t)
+      (declare (ignore output error-output))
+      (eql exit-code 0))))
+
 (defun tmux-ready-notification-install ()
   "Show the OMP-style tmux popup after each completed top-level user turn."
   (unless *tmux-ready-notification-installed-p*
@@ -61,9 +78,12 @@
               (prog1 (apply original application content arguments)
                 (unless (or (getf arguments :continuation-p)
                             (getf arguments :operation-request))
-                  (handler-case
-                      (tmux-ready-notification--send application)
-                    (serious-condition () nil))))))
+                    (handler-case
+                        (tmux-ready-notification--send application)
+                      (serious-condition () nil))
+                    (handler-case
+                        (ntfy-ready-notification--send application)
+                      (serious-condition () nil))))))
       (setf *tmux-ready-notification-installed-p* t)))
   nil)
 
