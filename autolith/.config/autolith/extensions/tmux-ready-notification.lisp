@@ -52,22 +52,69 @@
                                identifier location))))
         (tmux-ready-notification--show pane title message)))))
 
+(defun ntfy-ready-notification--character-bytes (character)
+  (let ((code (char-code character)))
+    (cond ((<= code #x7f) 1)
+          ((<= code #x7ff) 2)
+          ((<= code #xffff) 3)
+          (t 4))))
+
+(defun ntfy-ready-notification--chunks (text &optional (maximum-bytes 3800))
+  (let ((chunks nil)
+        (start 0)
+        (byte-count 0))
+    (loop for index from 0 below (length text)
+          for character = (char text index)
+          for bytes = (ntfy-ready-notification--character-bytes character)
+          do (when (and (plusp byte-count)
+                        (> (+ byte-count bytes) maximum-bytes))
+               (push (subseq text start index) chunks)
+               (setf start index
+                     byte-count 0))
+             (incf byte-count bytes))
+    (when (< start (length text))
+      (push (subseq text start) chunks))
+    (nreverse chunks)))
+
+(defun ntfy-ready-notification--last-assistant-text (application)
+  (loop for item in (reverse
+                     (conversation-input-items
+                      (application-conversation application)))
+        for text = (cl-llm-provider-api:response-item-assistant-text item)
+        when (and (stringp text)
+                  (plusp (length (string-trim
+                                  '(#\Space #\Tab #\Newline #\Return)
+                                  text))))
+          return text))
+
 (defun ntfy-ready-notification--send (application)
   (let* ((identifier
            (image-daemon:session-identifier-display
             (conversation-identifier (application-conversation application))))
-         (message
-           (tmux-ready-notification--sanitize
-            (format nil "Ready for input - Localgroup ID: ~A" identifier))))
-    (multiple-value-bind (output error-output exit-code)
-        (uiop:run-program
-         (list "curl" "--fail" "--silent" "--show-error" "--max-time" "5"
-               "--header" "Title: Autolith"
-               "--data-binary" message
-               "http://100.73.230.125:2586/driver")
-         :output nil :error-output nil :ignore-error-status t)
-      (declare (ignore output error-output))
-      (eql exit-code 0))))
+         (text (ntfy-ready-notification--last-assistant-text application))
+         (chunks (and text (ntfy-ready-notification--chunks text)))
+         (part-count (length chunks))
+         (title (tmux-ready-notification--sanitize
+                 (format nil "Autolith ~A" identifier))))
+    (when chunks
+      (loop for chunk in chunks
+            for part from 1
+            for part-title = (if (> part-count 1)
+                                 (format nil "~A (~D/~D)"
+                                         title part part-count)
+                                 title)
+            do (multiple-value-bind (output error-output exit-code)
+                   (uiop:run-program
+                    (list "curl" "--fail" "--silent" "--show-error"
+                          "--max-time" "5"
+                          "--header" (concatenate 'string "Title: " part-title)
+                          "--data-binary" chunk
+                          "http://100.73.230.125:2586/driver")
+                    :output nil :error-output nil :ignore-error-status t)
+                 (declare (ignore output error-output))
+                 (unless (eql exit-code 0)
+                   (return-from ntfy-ready-notification--send nil)))
+            finally (return t)))))
 
 (defun tmux-ready-notification-install ()
   "Show the OMP-style tmux popup after each completed top-level user turn."
