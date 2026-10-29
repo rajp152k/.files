@@ -11,7 +11,13 @@
   (when (probe-file local-init)
     (load local-init)))
 
-(load (merge-pathnames "extensions/notifications/tmux-ready-notification.lisp"
-                       *load-pathname*))
-(load (merge-pathnames "extensions/commands/config-reload.lisp"
-                       *load-pathname*))
+(let* ((extension-directory (merge-pathnames "extensions/" *load-pathname*))
+       (notification-extension
+         (merge-pathnames "notifications/tmux-ready-notification.lisp"
+                          extension-directory))
+       (reload-command-extension
+         (merge-pathnames "commands/config-reload.lisp" extension-directory)))
+  (load (if (probe-file notification-extension)
+            notification-extension
+            (merge-pathnames "tmux-ready-notification.lisp" extension-directory)))
+  (load reload-command-extension))
