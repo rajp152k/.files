@@ -11,5 +11,7 @@
   (when (probe-file local-init)
     (load local-init)))
 
-(load (merge-pathnames "extensions/tmux-ready-notification.lisp"
+(load (merge-pathnames "extensions/notifications/tmux-ready-notification.lisp"
+                       *load-pathname*))
+(load (merge-pathnames "extensions/commands/config-reload.lisp"
                        *load-pathname*))
