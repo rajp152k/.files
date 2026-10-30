@@ -73,6 +73,18 @@ rex -C <app-client> do client.theme.import \
 
 For CLI control of app actions, turn on **Remote Control** in Rex Settings → Rex Server. Import the theme from the app directly if you prefer to leave Remote Control off. The app stores appearance preferences separately from `init.lua`. Set Fira Mono, size 12, and Option-as-Alt in the app where supported; these Ghostty preferences are not Lua configuration settings in this package.
 
+### Green outlines
+
+Apply the native Rex focus outline on this Mac:
+
+```sh
+sh ~/.files/rex/apply-appearance.sh
+```
+
+This enables **Highlight active pane edges**, selects **Green**, sets highlight opacity to 100%, and turns border animation off. It applies to the focused terminal, including the floating btop, journal, scratch, and HUD panes. It uses the native Green color choice, not a custom `#00ff00` value. The script writes only these four app preferences. If Rex does not update live, reopen the app without stopping its server.
+
+The Ghostty frame uses a custom shader with an exact `#00ff00` edge. Rex's native outline follows pane focus; it is not a separate, always-visible window frame. The inspected Rex build exposes neither a custom border hex color nor a terminal shader setting. The floating-layer API has no border style field. Check both a normal terminal and a floating tool in the app before treating this as a visual match.
+
 ## Checks
 
 First load the configuration. Then run the integration test in a disposable session:
