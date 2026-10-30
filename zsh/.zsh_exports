@@ -7,3 +7,6 @@ export PATH="/opt/homebrew/bin:$GOPATH/bin:$PATH"
 
 ## tex
 export PATH="/Library/TeX/texbin:$PATH"
+
+## autolith
+export AUTOLITH_SITE_CONFIG_ROOT="$HOME/.files/skills/.agents"
