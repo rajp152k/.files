@@ -88,13 +88,18 @@ in a Vlime UI buffer to display that buffer's keys. See `:help vlime` for detail
 
 ## Installed runtime
 
-- Homebrew SBCL, with ASDF.
+- SBCL with ASDF. On NixOS, use `~/.files/nix-habits/neovim-dependencies.nix`,
+  which supplies SQLite and OpenSSL for CFFI calls. On macOS, use Homebrew SBCL.
 - Quicklisp at `~/quicklisp`, loaded explicitly by the launcher.
 - Backend checkouts under `~/.local/share/common-lisp`: `ramfjord/swank-lsp` at
   `20b04439b2ecd82c33d1b65f3a43c3a27b906c62`, `ramfjord/cl-scope-resolver` at
   `b8a137c420d37ad4b2eecf529a29864b07328cde`, and `ramfjord/jsonrpc` at
   `53caf42cb3d4afabb84a3869505d16d25c423895`.
 - Neovim plugins in `nvim-pack-lock.json`, plus the `commonlisp` parser.
+
+On NixOS, install the declared Neovim plugins, then run
+`sbcl --script ~/.files/nix-habits/setup-common-lisp.lisp` to provision Quicklisp
+and the pinned backend checkouts. See `~/.files/nix-habits/README.md` for deployment.
 
 Use the provisioned JSON-RPC checkout: the backend requires its patched byte-counted
 transport rather than Quicklisp's ordinary `jsonrpc`. All development listeners bind
