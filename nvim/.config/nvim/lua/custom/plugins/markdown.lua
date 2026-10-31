@@ -123,29 +123,8 @@ require('diagram').setup {
   },
 }
 
--- Heading-based folding with fenced code-block folds.
-_G.MarkdownHeadingFold = function(lnum)
-  local line = vim.fn.getline(lnum)
-
-  -- Toggle code fences open/close.
-  if line:match '^%s*```+%s*.*' or line:match '^%s*~~~+%s*.*' then
-    local fence_count_before = 0
-    for i = 1, lnum - 1 do
-      local prev = vim.fn.getline(i)
-      if prev:match '^%s*```+%s*.*' or prev:match '^%s*~~~+%s*.*' then
-        fence_count_before = fence_count_before + 1
-      end
-    end
-    return fence_count_before % 2 == 0 and 'a1' or 's1'
-  end
-
-  -- Heading-based folds: # => 1, ## => 2, etc.
-  local heading = line:match '^(#+)%s+'
-  if heading and #heading <= 6 then
-    return '>' .. #heading
-  end
-  return '='
-end
+-- Headings contain bullet-item folds, which can contain fenced code folds.
+_G.MarkdownHeadingFold = require('custom.markdown-folds').foldexpr
 
 require('markdown').setup {
   on_attach = function(bufnr)
