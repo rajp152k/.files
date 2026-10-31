@@ -4,6 +4,11 @@
       "rev": "81628c1dc07edadd1c2c3c27d8dbcb424da1dea0",
       "src": "https://github.com/carlos-algms/agentic.nvim"
     },
+    "conjure": {
+      "rev": "b23c76a8c874fe7ac5ad95255efc66173b049088",
+      "src": "https://github.com/Olical/conjure",
+      "version": "'b23c76a8c874fe7ac5ad95255efc66173b049088'"
+    },
     "diagram.nvim": {
       "rev": "a221810b17cdda2d5fdddba9bab3eba6fab8fabc",
       "src": "https://github.com/3rd/diagram.nvim"
@@ -19,6 +24,10 @@
     "image.nvim": {
       "rev": "88351f1f7d9dbae286e671ce3690a49660dd8a5c",
       "src": "https://github.com/3rd/image.nvim"
+    },
+    "iron.nvim": {
+      "rev": "5e73b979e83b959b0965cf75ec8ee324afaf3d34",
+      "src": "https://github.com/Vigemus/iron.nvim"
     },
     "markdown-table-wrap.nvim": {
       "rev": "a7117b5471787746290f0eddba032d50bdb86d94",
@@ -49,6 +58,10 @@
       "rev": "bfcc0171a43f22afa61d927ffe9fcb6cb85dc99e",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
+    "nvim-paredit": {
+      "rev": "b6ba636874a3115d944e35746444724240568aca",
+      "src": "https://github.com/julienvincent/nvim-paredit"
+    },
     "nvim-treesitter": {
       "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
@@ -62,6 +75,11 @@
       "rev": "f422cb5c6855f150e2ddcfaf44e7157b98b34f6a",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
+    "swank-lsp": {
+      "rev": "20b04439b2ecd82c33d1b65f3a43c3a27b906c62",
+      "src": "https://github.com/ramfjord/swank-lsp",
+      "version": "'20b04439b2ecd82c33d1b65f3a43c3a27b906c62'"
+    },
     "telescope-fzf-native.nvim": {
       "rev": "b25b749b9db64d375d782094e2b9dce53ad53a40",
       "src": "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
@@ -73,6 +91,15 @@
     "telescope.nvim": {
       "rev": "9377230aa5305d9e9aca4ed8dadf1070fb4aa9fc",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
+    },
+    "venv-selector.nvim": {
+      "rev": "cc4bb3975de8835291f9bb45889e96c6b2795fc4",
+      "src": "https://github.com/linux-cultist/venv-selector.nvim"
+    },
+    "vlime": {
+      "rev": "e276e9a6f37d2699a3caa63be19314f5a19a1481",
+      "src": "https://github.com/vlime/vlime",
+      "version": "'e276e9a6f37d2699a3caa63be19314f5a19a1481'"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",

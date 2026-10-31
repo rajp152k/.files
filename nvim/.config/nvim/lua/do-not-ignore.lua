@@ -4,7 +4,7 @@
 -- This is stowed from ~/.files/nvim/.config/nvim into ~/.config/nvim.
 -- Edit the versioned source, not a separate copy in the home directory.
 -- The user's primary work is editing Markdown, reading unfamiliar codebases,
--- asking OMP through Agentic's ACP UI, and using Neogit. Preserve those paths.
+-- asking Autolith through Agentic's ACP UI, and using Neogit. Preserve those paths.
 -- Keep render-markdown, Markdown tables/images/diagrams, Agentic, Neogit and
 -- its Diffview integration. Gitsigns is for read-only hunk navigation/blame;
 -- staging and reset belong in Neogit. Do not reintroduce a second Git workflow.
@@ -31,6 +31,12 @@
 --
 -- This is a read-oriented config: no code snippets, completion UI, autoformat
 -- on save, or editing-only helpers by default. Markdown editing is preserved.
+-- Common Lisp is an explicit development exception: keep Lisp-local paired
+-- delimiters, matching parentheses, cursor-aware one-key Paredit, and manual
+-- Vlime completion, compilation, inspector and debugger. Its native swank_lsp
+-- client attaches to the same tmux-hosted SBCL image as Vlime, without plugin
+-- default LSP keymaps or a second automatically spawned image. Runtime
+-- dependencies live outside Mason; see doc/common-lisp.md and scripts/lisp-dev.
 -- Keep Treesitter syntax, Telescope/rg search, Which-key discovery and the
 -- statusline. Do not prune other language LSPs simply because this month's
 -- projects use Java, Go and Flutter; the user wants cross-language exploration.

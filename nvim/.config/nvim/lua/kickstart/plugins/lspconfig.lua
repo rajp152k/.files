@@ -49,6 +49,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
 
+
+      -- Show hover documentation for the symbol under the cursor.
+      map('K', vim.lsp.buf.hover, 'Hover Documentation')
+
     -- Rename the variable under your cursor.
     --  Most Language Servers support renaming across files, etc.
     map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -119,6 +123,8 @@ local servers = {
     end,
   },
   rust_analyzer = {},
+  -- Installed outside Mason with Homebrew. Keep Clojure LSP in the explicit enable list.
+  clojure_lsp = {},
   --
   -- Some languages (like typescript) have entire language plugins that can be useful:
   --    https://github.com/pmizio/typescript-tools.nvim

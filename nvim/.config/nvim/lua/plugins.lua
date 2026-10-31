@@ -8,7 +8,7 @@ require 'kickstart.plugins.telescope'
 require 'kickstart.plugins.lspconfig'
 require 'kickstart.plugins.treesitter'
 
--- Local Markdown, OMP, Neogit, and theme configuration.
+-- Local Markdown, Autolith, Neogit, and theme configuration.
 require 'custom.plugins'
 
 -- vim: ts=2 sts=2 sw=2 et

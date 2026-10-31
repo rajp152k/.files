@@ -1,0 +1,59 @@
+#!/bin/sh
+# Persistent per-project SBCL, isolated from Neovim's lifetime.
+set -eu
+umask 077
+action=${1:-status}
+root=$(cd "${2:-.}" && pwd -P)
+system=${3:-}
+key=$(printf '%s' "$root" | shasum -a 256 | cut -d ' ' -f 1)
+session="lisp-$(printf '%s' "$key" | cut -c 1-16)"
+state="${XDG_CACHE_HOME:-$HOME/.cache}/nvim/common-lisp/$key"
+config="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+data="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
+case "$action" in
+  start)
+    if ! tmux has-session -t "=$session" 2>/dev/null; then
+      mkdir -p "$state"
+      rm -f "$state/lsp.port" "$state/vlime.port"
+      tmux new-session -d -s "$session" -c "$root" \
+        env "LISP_DEV_ROOT=$root" "LISP_DEV_STATE=$state" \
+        "LISP_DEV_SYSTEM=$system" "LISP_DEV_DATA=$data" \
+        "LISP_DEV_BACKEND=${XDG_DATA_HOME:-$HOME/.local/share}/common-lisp" \
+        "$(command -v sbcl)" --noinform --no-userinit --load "$config/scripts/lisp-dev.lisp"
+    elif [ -n "$system" ]; then
+      echo 'Image already running; load another system through <Space>la.' >&2
+      exit 1
+    fi
+    count=0
+    until [ -s "$state/lsp.port" ] && [ -s "$state/vlime.port" ]; do
+      if ! tmux has-session -t "=$session" 2>/dev/null; then
+        echo "SBCL startup failed. See $state/startup.log" >&2
+        exit 1
+      fi
+      count=$((count + 1))
+      if [ "$count" -ge 600 ]; then
+        echo "SBCL not ready after 60s. See $state/startup.log; attach with $0 console '$root'." >&2
+        exit 1
+      fi
+      sleep 0.1
+    done
+    printf 'SBCL ready: %s\n' "$root"
+    ;;
+  stop)
+    if tmux has-session -t "=$session" 2>/dev/null; then tmux kill-session -t "=$session"; fi
+    rm -f "$state/lsp.port" "$state/vlime.port"
+    printf 'SBCL stopped: %s\n' "$root"
+    ;;
+  status)
+    if tmux has-session -t "=$session" 2>/dev/null; then
+      printf 'SBCL running: %s\n' "$root"
+      for name in vlime lsp; do
+        if [ -s "$state/$name.port" ]; then printf '%s port: %s\n' "$name" "$(cat "$state/$name.port")"; fi
+      done
+    else
+      printf 'SBCL stopped: %s\n' "$root"
+    fi
+    ;;
+  console) exec tmux attach-session -t "=$session" ;;
+  *) echo "Usage: $0 {start|stop|status|console} [project-root] [asdf-system]" >&2; exit 2 ;;
+esac

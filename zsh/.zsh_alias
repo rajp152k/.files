@@ -1,6 +1,9 @@
 #kanata mouseless
 alias kml="bash ~/.load/kanata.sh"
 
+#watch
+alias wn1="watch -n 1"
+
 #nvim
 alias nvim=$HOME/source/tools/nvim/nvim-macos-arm64/bin/nvim
 alias vi='nvim'
@@ -25,3 +28,16 @@ alias nvd='git difftool -y -t nvimdiff'
 #C
 alias c17='clang --std=c17'
 alias c23='clang --std=c23'
+
+#autolith
+_a() { command autolith --fullscreen "$@" }
+
+a()   { _a "$@" }
+al()  { cd ~/source/laboratory && _a "$@" }
+als() { _a localgroup status "$@" }
+alp() { _a localgroup pause "$@" }
+ala() { _a localgroup attach "$@" }
+ald() { _a localgroup detach "$@" }
+alk() { _a localgroup kill "$@" }
+alt() { _a localgroup tell "$@" }
+ae()  { cd ~/.config/autolith && _a "$@" }
