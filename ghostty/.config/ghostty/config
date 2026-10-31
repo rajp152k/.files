@@ -17,3 +17,7 @@ cursor-style-blink = false
 # composing characters (Opt+Z was inserting Ω). Needed for omp Alt+ chords.
 # Use "left" or "right" instead of "true" to keep one side for symbols.
 macos-option-as-alt = true
+
+# Use Xfce window decorations with square corners.
+window-decoration = server
+gtk-titlebar = false
