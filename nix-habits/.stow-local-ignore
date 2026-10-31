@@ -1,0 +1,3 @@
+# Reference documentation and Nix modules are not home-directory dotfiles.
+# Ignore every entry even when running `stow nix-habits` or `stow */`.
+.*
