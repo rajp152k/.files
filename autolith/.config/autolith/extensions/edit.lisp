@@ -1,6 +1,7 @@
 (in-package #:autolith)
 
 (defvar *external-editor-read-event-installed-p* nil)
+(defvar *external-editor-character-event-installed-p* nil)
 (defvar *external-editor-ui-handler-installed-p* nil)
 
 (defun external-editor--temporary-file (text)
@@ -36,6 +37,14 @@
 
 (defun external-editor-install ()
   "Bind Ctrl-E in the Autolith prompt to edit its draft with VISUAL or EDITOR."
+  (unless *external-editor-character-event-installed-p*
+    (let ((original (symbol-function 'clinedi::input--character-key-event)))
+      (setf (symbol-function 'clinedi::input--character-key-event)
+            (lambda (code modifiers &optional shifted)
+              (if (and (= code 101) (= modifiers 4))
+                  :edit-external
+                  (funcall original code modifiers shifted))))
+      (setf *external-editor-character-event-installed-p* t)))
   (unless *external-editor-read-event-installed-p*
     (let ((original (symbol-function 'clinedi:read-event)))
       (setf (symbol-function 'clinedi:read-event)
