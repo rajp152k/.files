@@ -1,6 +1,6 @@
 # Clojure in Neovim
 
-`clojure-lsp` provides navigation, workspace symbols, diagnostics, and code actions. The configuration uses the system `clojure-lsp` executable, installed with Homebrew, and the `clojure` Tree-sitter parser.
+`clojure-lsp` provides navigation, workspace symbols, diagnostics, and code actions. The configuration uses the system `clojure-lsp` executable and the `clojure` Tree-sitter parser. On NixOS, `~/.files/nix-habits/neovim-dependencies.nix` supplies Clojure CLI and clojure-lsp. On macOS, install them with Homebrew.
 
 ## Navigation
 
@@ -17,7 +17,7 @@ These LSP keys are buffer-local and appear when the server attaches. Start Neovi
 
 ## REPL and structural editing
 
-Conjure provides interactive evaluation. Start the project's nREPL with the command used by that project, then press `<Space>ee` to evaluate the form under the cursor. Run `:ConjureSchool` for the interactive guide. Read `:help conjure-client-clojure-nrepl` for the Clojure client mappings.
+Conjure provides interactive evaluation. Its default auto-REPL uses Babashka (`bb nrepl-server`), included in the NixOS module. For a JVM project, start its own nREPL with the project's dependencies and connect through `.nrepl-port`. Press `<Space>ee` to evaluate the form under the cursor. Run `:ConjureSchool` for the interactive guide. Read `:help conjure-client-clojure-nrepl` for the Clojure client mappings.
 
 The existing paredit mappings also apply in Clojure buffers: `<` and `>` move list boundaries; `af` / `if` select a form; `aF` / `iF` select a top-level form; `]e` / `[e` move between elements. Delimiter and quote pairs are enabled in insert mode.
 
