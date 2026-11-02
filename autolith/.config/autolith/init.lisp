@@ -21,3 +21,5 @@
             notification-extension
             (merge-pathnames "tmux-ready-notification.lisp" extension-directory)))
   (load reload-command-extension))
+
+  (load (merge-pathnames "extensions/edit.lisp" *load-pathname*))
