@@ -41,3 +41,5 @@ ald() { _a localgroup detach "$@" }
 alk() { _a localgroup kill "$@" }
 alt() { _a localgroup tell "$@" }
 ae()  { cd ~/.config/autolith && _a "$@" }
+
+alias cwatch="watch -c 'script -q /dev/null autolith localgroup status'"
