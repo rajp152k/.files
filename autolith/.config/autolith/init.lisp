@@ -1,8 +1,8 @@
 (in-package #:autolith)
 
 ;; Portable defaults. Keep these settings in sync with intended /settings changes.
-(setf (config :model) "gpt-6-luna"
-      (config :reasoning-effort) "high"
+(setf (config :model) "gpt-6.1-sol"
+      (config :reasoning-effort) "medium"
       (config :reasoning-traces-p) t
       (config :simple-technical-english-p) t)
 
