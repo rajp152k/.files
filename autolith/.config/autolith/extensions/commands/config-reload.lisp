@@ -1,7 +1,7 @@
 (in-package #:autolith)
 
 ;; Loaded by init.lisp at startup and by /reval in existing images.
-(load (merge-pathnames "../dispatch-policy.lisp" *load-truename*)
+(load (merge-pathnames "../peer-discovery.lisp" *load-truename*)
       :verbose nil :print nil)
 
 (define-application-command user-config-reload-command
