@@ -1,0 +1,30 @@
+(in-package #:autolith)
+
+(defun check-dispatch-policy (configuration)
+  "Check native role routes and repeatable policy reload without model requests."
+  (let* ((before (list (config :model configuration)
+                       (config :reasoning-effort configuration)))
+         (*configuration* configuration))
+    (dispatch-policy-reload)
+    (dispatch-policy-reload)
+    (assert (equal before (list (config :model configuration)
+                               (config :reasoning-effort configuration))))
+    (assert (= 1 (count "dispatch-policy-context"
+                        (context-contributor-registrations)
+                        :key (lambda (entry) (getf entry :identifier))
+                        :test #'string=)))
+    (multiple-value-bind (definitions diagnostics) (task-discover-agents configuration)
+      (assert (null diagnostics))
+      (loop for name in '("dispatch-low" "dispatch-medium")
+            for effort in '("low" "medium")
+            for role = (task-find-agent-definition definitions name)
+            do (assert role)
+               (assert (eq :user (task-agent-definition-source role)))
+               (let ((child (task-configuration-for-definition configuration role)))
+                 (assert (string= (config :model configuration) (config :model child)))
+                 (assert (string= effort (config :reasoning-effort child))))
+            finally (assert (null (task-agent-definition-spawns
+                                   (task-find-agent-definition definitions "dispatch-low")))))
+      (assert (eq :all (task-agent-definition-spawns
+                        (task-find-agent-definition definitions "dispatch-medium")))))
+    (list :checks :passed :effective (dispatch-policy-status configuration))))
