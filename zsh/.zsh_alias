@@ -14,6 +14,9 @@ alias lt='ls -lthU'
 
 alias cid='caffeinate -id'
 
+#lazydocker
+alias lzd='lazydocker'
+
 #blog
 alias write='cd $HOME/source/blog/yetanotherraj && ./write.sh'
 alias publish='cd $HOME/source/blog/yetanotherraj && ./publish.sh'
@@ -30,16 +33,14 @@ alias c17='clang --std=c17'
 alias c23='clang --std=c23'
 
 #autolith
-_a() { command autolith --fullscreen "$@" }
+_a() { command autolith --fullscreen --permissions full "$@" }
 
 a()   { _a "$@" }
-al()  { cd ~/source/laboratory && _a "$@" }
 als() { _a localgroup status "$@" }
 alp() { _a localgroup pause "$@" }
 ala() { _a localgroup attach "$@" }
 ald() { _a localgroup detach "$@" }
 alk() { _a localgroup kill "$@" }
 alt() { _a localgroup tell "$@" }
-ae()  { cd ~/.config/autolith && _a "$@" }
 
 alias cwatch="watch -c 'script -q /dev/null autolith localgroup status'"
