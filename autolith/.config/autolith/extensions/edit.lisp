@@ -3,6 +3,13 @@
 (defvar *external-editor-read-event-installed-p* nil)
 (defvar *external-editor-character-event-installed-p* nil)
 (defvar *external-editor-ui-handler-installed-p* nil)
+(defvar *external-editor-ui-handler-version* nil)
+
+(defparameter *external-editor-trigger-events* '(:end :edit-external)
+  "Semantic input events that open the external editor.")
+
+(defun external-editor--trigger-event-p (event)
+  (not (null (member event *external-editor-trigger-events*))))
 
 (defun external-editor--temporary-file (text)
   (loop repeat 20
@@ -36,7 +43,7 @@
         (delete-file pathname)))))
 
 (defun external-editor-install ()
-  "Bind Ctrl-E in the Autolith prompt to edit its draft with VISUAL or EDITOR."
+  "Bind configured semantic input events to the external editor."
   (unless *external-editor-character-event-installed-p*
     (let ((original (symbol-function 'clinedi::input--character-key-event)))
       (setf (symbol-function 'clinedi::input--character-key-event)
@@ -57,11 +64,15 @@
                       (funcall original :stream stream
                                         :escape-delay escape-delay))))))
       (setf *external-editor-read-event-installed-p* t)))
+  ;; Replace the earlier handler once so it supports the configured event set.
+  (unless (eql *external-editor-ui-handler-version* 2)
+    (setf *external-editor-ui-handler-installed-p* nil
+          *external-editor-ui-handler-version* 2))
   (unless *external-editor-ui-handler-installed-p*
     (let ((original (symbol-function 'terminal-ui--apply-editor-event)))
       (setf (symbol-function 'terminal-ui--apply-editor-event)
             (lambda (ui event)
-              (if (eq event :edit-external)
+              (if (external-editor--trigger-event-p event)
                   (let* ((editor (terminal-ui-editor ui))
                          (edited (external-editor--edit
                                   (line-editor-text editor))))
