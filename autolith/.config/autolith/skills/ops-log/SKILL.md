@@ -29,6 +29,8 @@ Use these top-level Markdown headings in this order:
 
 Do not add a separate Action or Expected state field by default. Use the named sections and Conclusion for that information.
 
+Keep editorial review notes, citation questions, approval requests, and draft status in the message to raj, outside the article. Resolve citation details before adding them to the prose. Include uncertainty about the work itself when readers need it. Keep the Conclusion about the work and its result, not the review process.
+
 ## Language
 
 Use ASD-STE100 Simplified Technical English throughout new log prose. ASD-STE100 is the sole writing standard: https://www.asd-ste100.org/ . The source skill cites Issue 9 (January 2025); check the official source when the issue matters.
